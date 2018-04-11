@@ -33,7 +33,7 @@
         "test": [
             "composer install",
             "./vendor/bin/phpcs --standard=psr2 src/ tests/SymfonyRollbarBundle",
-            "./vendor/bin/phpunit -c tests/"
+            "./vendor/bin/phpunit --coverage-clover build/logs/clover.xml -c tests/"
         ]
     }
 }
