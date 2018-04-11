@@ -1,7 +1,7 @@
 <?php
 namespace SymfonyRollbarBundle\Provider;
 
-use Rollbar;
+use Rollbar\Rollbar;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use SymfonyRollbarBundle\DependencyInjection\SymfonyRollbarExtension;
 
