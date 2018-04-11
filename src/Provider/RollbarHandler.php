@@ -2,6 +2,9 @@
 namespace SymfonyRollbarBundle\Provider;
 
 use Rollbar\Rollbar;
+use Rollbar\Monolog\Handler\RollbarHandler as RollbarMonologHandler;
+
+use Monolog\Logger;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use SymfonyRollbarBundle\DependencyInjection\SymfonyRollbarExtension;
 
@@ -23,9 +26,13 @@ class RollbarHandler
     public function getHandler()
     {
         $config = $this->getContainer()->getParameter(SymfonyRollbarExtension::ALIAS . '.config');
-
+        
         Rollbar::init($config['rollbar'], false, false, false);
-        $handler = new \Monolog\Handler\RollbarHandler(Rollbar::$instance);
+        
+        $handler = new RollbarMonologHandler(
+            Rollbar::logger(),
+            Logger::ERROR
+        );
 
         return $handler;
     }
