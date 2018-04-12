@@ -7,6 +7,10 @@
         {
             "name": "OxCom",
             "email": "lancer.oxcom@gmail.com"
+        },
+        {
+            "name": "Artur Moczulski",
+            "email": "artur.moczulski@gmail.com"
         }
     ],
     "autoload": {
