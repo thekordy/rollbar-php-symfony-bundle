@@ -34,6 +34,7 @@
             "composer install",
             "./vendor/bin/phpcs --standard=psr2 src/ tests/SymfonyRollbarBundle",
             "./vendor/bin/phpunit --coverage-clover build/logs/clover.xml -c tests/"
-        ]
+        ],
+        "fix": "phpcbf --standard=PSR1,PSR2 src tests"
     }
 }
