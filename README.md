@@ -42,8 +42,8 @@ See [real companies improving their development workflow thanks to Rollbar](http
 symfony_rollbar:
   enable: true
   rollbar:
-    access_token: [your access token]
-    environment: [environment name]
+    access_token: YourAccessToken
+    environment: YourEnvironmentName
     
 ```
 
@@ -58,8 +58,8 @@ All of them can be configure by nesting them in `symfony_rollbar.rollbar` array,
 symfony_rollbar:
   enable: true
   rollbar:
-    access_token: [your access token]
-    environment: [environment name]
+    access_token: YourAccessToken
+    environment: YourEnvironmentName
     scrub_fields: [password, password_confirmation, credit_card_number]
     
 ```
