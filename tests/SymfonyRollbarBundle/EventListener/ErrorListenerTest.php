@@ -92,25 +92,25 @@ class ErrorListenerTest extends KernelTestCase
     //         }
     //     });
 
-    foreach ($listeners as $listener) {
-        /**
-             * @var AbstractListener $listener
-             */
-        if (!$listener[0] instanceof AbstractListener) {
-            continue;
-        }
+    //     foreach ($listeners as $listener) {
+    //         /**
+    //          * @var AbstractListener $listener
+    //          */
+    //         if (!$listener[0] instanceof AbstractListener) {
+    //             continue;
+    //         }
 
-        $listener[0]->getLogger()->setHandlers([$handler]);
-    }
+    //         $listener[0]->getLogger()->setHandlers([$handler]);
+    //     }
 
-        // @ will allow to skip fatal error inside application, but we can get error with error_get_last()
-    if (version_compare(PHP_VERSION, '7.0.0')  >= 0) {
-        $this->expectException('Error');
-        $this->expectExceptionMessage('Call to undefined function this_is_fatal_error()');
-    }
+    //     // @ will allow to skip fatal error inside application, but we can get error with error_get_last()
+    //     if (version_compare(PHP_VERSION, '7.0.0')  >= 0) {
+    //         $this->expectException('Error');
+    //         $this->expectExceptionMessage('Call to undefined function this_is_fatal_error()');
+    //     }
 
-        @include __DIR__ . '/../../Fixtures/fatal.php';
-}
+    //     @include __DIR__ . '/../../Fixtures/fatal.php';
+    // }
 
     /**
      * @dataProvider generateFatalError
@@ -118,89 +118,89 @@ class ErrorListenerTest extends KernelTestCase
      * @param array $error
      * @param bool $called
      */
-public function testFatalErrorParser($error, $called)
-{
-    $mock = $this->getMockBuilder(ErrorListener::class)
+    public function testFatalErrorParser($error, $called)
+    {
+        $mock = $this->getMockBuilder(ErrorListener::class)
              ->setMethods(['getLastError', 'handleError'])
              ->disableOriginalConstructor()
              ->getMock();
 
-    $mock->method('getLastError')
-    ->willReturn($error);
+        $mock->method('getLastError')
+        ->willReturn($error);
 
-    $mock->expects($called ? $this->once() : $this->never())
-    ->method('handleError')
-    ->with(
-        $this->equalTo($error['type']),
-        $this->stringContains($error['message']),
-        $this->stringContains($error['file']),
-        $this->equalTo($error['line'])
-    );
+        $mock->expects($called ? $this->once() : $this->never())
+        ->method('handleError')
+        ->with(
+            $this->equalTo($error['type']),
+            $this->stringContains($error['message']),
+            $this->stringContains($error['file']),
+            $this->equalTo($error['line'])
+        );
 
-    /**
+        /**
          * @var ErrorListener $mock
          */
-    $mock->handleFatalError();
-}
+        $mock->handleFatalError();
+    }
 
     /**
      * @return array
      */
-public function generateFatalError()
-{
-    return [
-    [['type' => E_ERROR, 'message' => 'Error message', 'file' => __DIR__, 'line' => rand(10, 100)], true],
-    [null, false]
-    ];
-}
+    public function generateFatalError()
+    {
+        return [
+        [['type' => E_ERROR, 'message' => 'Error message', 'file' => __DIR__, 'line' => rand(10, 100)], true],
+        [null, false]
+        ];
+    }
 
     /**
      * @dataProvider generateIsReportable
      * @param bool $called
      */
-public function testIsReportable($called)
-{
-    $container = static::$kernel->getContainer();
-    $generator = $container->get('symfony_rollbar.payload.generator');
+    public function testIsReportable($called)
+    {
+        $container = static::$kernel->getContainer();
+        $generator = $container->get('symfony_rollbar.payload.generator');
 
-    $logger = $this->getMockBuilder(\Monolog\Logger::class)
+        $logger = $this->getMockBuilder(\Monolog\Logger::class)
                ->setMethods(['error'])
                ->setConstructorArgs(['test-alias'])
                ->getMock();
 
-    $logger->method('error')
-       ->willReturn(true);
+        $logger->method('error')
+           ->willReturn(true);
 
-    $mock   = $this->getMockBuilder(ErrorListener::class)
+        $mock   = $this->getMockBuilder(ErrorListener::class)
                ->setMethods(['isReportable', 'getGenerator', 'getLogger'])
                ->disableOriginalConstructor()
                ->getMock();
 
-    $mock->method('isReportable')
-     ->willReturn($called);
+        $mock->method('isReportable')
+         ->willReturn($called);
 
-    $mock->expects($called ? $this->once() : $this->never())
-     ->method('getGenerator')
-     ->willReturn($generator);
+        $mock->expects($called ? $this->once() : $this->never())
+         ->method('getGenerator')
+         ->willReturn($generator);
 
-    $mock->expects($called ? $this->once() : $this->never())
-     ->method('getLogger')
-     ->willReturn($logger);
+        $mock->expects($called ? $this->once() : $this->never())
+         ->method('getLogger')
+         ->willReturn($logger);
 
-    /**
+        /**
          * @var ErrorListener $mock
          */
-    $mock->handleError(E_ERROR, 'Message', __FILE__, rand(1, 10));
-}
+        $mock->handleError(E_ERROR, 'Message', __FILE__, rand(1, 10));
+    }
 
     /**
      * @return array
      */
-public function generateIsReportable()
-{
-    return [
-    [true],
-    [false]
-    ];
-}
+    public function generateIsReportable()
+    {
+        return [
+        [true],
+        [false]
+        ];
+    }
 }
