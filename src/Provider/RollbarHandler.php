@@ -27,6 +27,10 @@ class RollbarHandler
     {
         $config = $this->getContainer()->getParameter(SymfonyRollbarExtension::ALIAS . '.config');
         
+        if (isset($_ENV['ROLLBAR_TEST_TOKEN']) && $_ENV['ROLLBAR_TEST_TOKEN']) {
+            $config['rollbar']['access_token'] = $_ENV['ROLLBAR_TEST_TOKEN'];
+        }
+        
         Rollbar::init($config['rollbar'], false, false, false);
         
         $handler = new RollbarMonologHandler(
