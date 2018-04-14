@@ -17,6 +17,9 @@
         "psr-4": { "SymfonyRollbarBundle\\": "src/" }
     },
     "autoload-dev": {
+        "files": [
+            "tests/Fixtures/app/AppKernel.php"
+            ],
         "psr-4": { "Tests\\": "tests/"}
     },
     "require": {
