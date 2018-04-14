@@ -78,6 +78,7 @@ The original author of this package is [@OxCom](https://www.oxcom.me). This is a
 
 ## Testing
 
+You can set up a Rollbar Access Token for testing in `tests/phpunit.xml`.
 Tests are in `tests`.
 To run the tests: `composer test`
 To fix code style issues: `composer fix`
