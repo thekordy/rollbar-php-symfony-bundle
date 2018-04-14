@@ -25,6 +25,6 @@ class RollbarHandlerTest extends KernelTestCase
         $this->assertEquals($container, $cntr);
 
         $handler = $provider->getHandler();
-        $this->assertInstanceOf(\Monolog\Handler\RollbarHandler::class, $handler);
+        $this->assertInstanceOf(\Rollbar\Monolog\Handler\RollbarHandler::class, $handler);
     }
 }
