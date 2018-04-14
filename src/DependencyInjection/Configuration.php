@@ -50,8 +50,8 @@ class Configuration implements ConfigurationInterface
             }
                     
             $default = method_exists(\Rollbar\Defaults::get(), $method) ?
-            \Rollbar\Defaults::get()->$method() :
-            null;
+                \Rollbar\Defaults::get()->$method() :
+                null;
                     
             $rollbarConfigNode->children()
             ->scalarNode($option)->defaultValue($default)->end();
