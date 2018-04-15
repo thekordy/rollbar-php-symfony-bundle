@@ -15,8 +15,8 @@ Find out [how Rollbar can help you decrease development and maintenance costs](h
 See [real companies improving their development workflow thanks to Rollbar](https://rollbar.com/customers/).
 
 ## Installation
-1. Add SymfonyRollbarBundle with composer: `composer require oxcom/symfony-rollbar-bundle`
-2. Register SymfonyRollbarBundle in AppKernel::registerBundles()
+1. Add `SymfonyRollbarBundle` with composer: `composer require oxcom/symfony-rollbar-bundle`
+2. Register `SymfonyRollbarBundle` in `AppKernel::registerBundles()`
 
 ```php
 
