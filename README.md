@@ -130,8 +130,8 @@ You can provide your own logic for retrieving user data with the `person_fn` con
 rollbar:
     enable: true
     config:
-        access_token: eb2561a52efb4d4bba5a1d4b68be13e9
-        environment: development
+        access_token: YourAccessToken
+        environment: YourEnvironmentName
         person_fn: '\Example\UserData::personFn'
         
 ```
