@@ -76,6 +76,36 @@ rollbar:
     
 ```
 
+### `person_fn` configuration option
+
+You can provide your own logic for retrieving user data with the `person_fn` configuration option. The value should be a PHP callable returning an array of data in the `person` format, i.e.:
+
+```yaml
+
+rollbar:
+    enable: true
+    config:
+        access_token: eb2561a52efb4d4bba5a1d4b68be13e9
+        environment: development
+        person_fn: '\Example\UserData::personFn'
+        
+```
+
+```php
+namespace Example;
+
+class UserData
+{
+  
+  public static function personFn()
+  {
+    return array(
+      'id' => '444'
+    );
+  }
+}
+```
+
 ## Help / Support
 
 If you run into any issues, please email us at [support@rollbar.com](mailto:support@rollbar.com)
