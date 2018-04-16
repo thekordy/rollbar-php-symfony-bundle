@@ -14,11 +14,14 @@
         }
     ],
     "autoload": {
-        "psr-4": { "SymfonyRollbarBundle\\": "src/" }
+        "psr-4": { "Rollbar\\Symfony\\RollbarBundle\\": "" },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     },
     "autoload-dev": {
         "files": [
-            "tests/Fixtures/app/AppKernel.php"
+            "Tests/Fixtures/app/AppKernel.php"
             ],
         "psr-4": { "Tests\\": "tests/"}
     },

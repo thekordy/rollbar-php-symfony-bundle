@@ -2,6 +2,7 @@
 
 namespace SymfonyRollbarBundle\DependencyInjection;
 
+use Rollbar\Rollbar;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
@@ -25,10 +26,12 @@ class SymfonyRollbarExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        var_dump(get_called_class() . '::load'); die();
+        
         $configuration = new Configuration();
         $config        = $this->processConfiguration($configuration, $configs);
 
-        if (!$config['enable']) {
+        if (empty($config['enable'])) {
             return;
         }
 
@@ -38,6 +41,20 @@ class SymfonyRollbarExtension extends Extension
 
         // store parameters for external use
         $container->setParameter(static::ALIAS . '.config', $config);
+        
+        // initialize Rollbar
+        if (isset($_ENV['ROLLBAR_TEST_TOKEN']) && $_ENV['ROLLBAR_TEST_TOKEN']) {
+            $config['rollbar']['access_token'] = $_ENV['ROLLBAR_TEST_TOKEN'];
+        }
+        
+        if (!isset($config['person']) || (isset($config['person']) && !$config['person'])) {
+            $config['person'] = $this->getContainer()
+                ->get('security.token_storage')
+                ->getToken()
+                ->getUser();
+        }
+        
+        Rollbar::init($config['rollbar'], false, false, false);
     }
 
     /**

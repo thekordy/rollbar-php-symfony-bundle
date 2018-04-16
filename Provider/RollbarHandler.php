@@ -21,17 +21,32 @@ class RollbarHandler
     }
 
     /**
-     * @return \Monolog\Handler\RollbarHandler
+     * @return \Rollbar\Monolog\Handler\RollbarHandler
      */
     public function getHandler()
     {
         $config = $this->getContainer()->getParameter(SymfonyRollbarExtension::ALIAS . '.config');
         
-        if (isset($_ENV['ROLLBAR_TEST_TOKEN']) && $_ENV['ROLLBAR_TEST_TOKEN']) {
-            $config['rollbar']['access_token'] = $_ENV['ROLLBAR_TEST_TOKEN'];
+        if (empty($config['enable'])) {
+            return;
         }
         
+        // if (isset($_ENV['ROLLBAR_TEST_TOKEN']) && $_ENV['ROLLBAR_TEST_TOKEN']) {
+        //     $config['rollbar']['access_token'] = $_ENV['ROLLBAR_TEST_TOKEN'];
+        // }
+        
+        // if (!isset($config['person']) || (isset($config['person']) && !$config['person'])) {
+        //     $config['person'] = $this->getContainer()
+        //         ->get('security.token_storage')
+        //         ->getToken()
+        //         ->getUser();
+        // }
+        
         Rollbar::init($config['rollbar'], false, false, false);
+        
+        // $rollbarLogger = \Rollbar\Rollbar::scope($config['rollbar']);
+        
+        // Rollbar::configure($config['rollbar']);
         
         $handler = new RollbarMonologHandler(
             Rollbar::logger(),

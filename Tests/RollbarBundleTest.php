@@ -1,5 +1,5 @@
 <?php
-namespace Tests\SymfonyRollbarBundle;
+namespace Rollbar\Symfony\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -8,10 +8,10 @@ use \Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
- * Class BundleTest
+ * Class RollbarBundleTest
  * @package Tests\SymfonyRollbarBundle
  */
-class BundleTest extends KernelTestCase
+class RollbarBundleTest extends KernelTestCase
 {
     public function setUp()
     {
