@@ -76,7 +76,13 @@ rollbar:
     
 ```
 
+### `person` configuration option
+
+By default, this bundle fetches the user data with `$container->get('security.token_storage')->getToken()->getUser()`. However, you can hardcode your own person data here. Although this might be used rarely, if you want to pass user data to Rollbar, you probably want to set up `person_fn` (see below).
+
 ### `person_fn` configuration option
+
+*Note:* data returned by the `person_fn` callable will overwrite any data provided in `person` config or fetched from Symfony's `$container->get('security.token_storage')->getToken()->getUser()`.
 
 You can provide your own logic for retrieving user data with the `person_fn` configuration option. The value should be a PHP callable returning an array of data in the `person` format, i.e.:
 
