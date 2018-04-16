@@ -59,6 +59,45 @@ monolog:
     
 ```
 
+## Usage
+
+### Exception reporting
+
+Symfony 3 exceptions will be reported to Rollbar automatically after you install and configure the bundle.
+
+### Manual reporting
+
+This bundle injects itself into the Monolog loggers. Thanks to this, all of the Monolog logs will be automatically passed to Rollbar as well.
+
+All you need to do is obtain the `LoggerInterface` implementation from the service container.
+
+```php
+
+  namespace AppBundle\Controller;
+  
+  use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+  use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+  use Symfony\Component\HttpFoundation\Request;
+  use Psr\Log\LoggerInterface;
+  
+  class DefaultController extends Controller
+  {
+      /**
+       * @Route("/", name="homepage")
+       */
+      public function indexAction(Request $request, LoggerInterface $logger)
+      {
+          $logger->error('Test info with person data');
+          
+          // replace this example code with whatever you need
+          return $this->render('default/index.html.twig', [
+              'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
+          ]);
+      }
+  }
+
+```
+
 ## Configuration
 
 You can see all of the Rollbar configuration options [here](https://github.com/rollbar/rollbar-php#configuration-reference).
