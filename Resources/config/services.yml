@@ -13,12 +13,12 @@ services:
 #     tags:
 #       - { name: kernel.event_listener, event: kernel.exception }
 
-  Rollbar\Symfony\RollbarBundle\Factories\RollbarHandlerFactory: ~
+  Rollbar\Symfony\RollbarBundle\Factories\RollbarHandlerFactory:
+    arguments:
+      - '@service_container'
 
   Rollbar\Monolog\Handler\RollbarHandler:
     factory: 'Rollbar\Symfony\RollbarBundle\Factories\RollbarHandlerFactory:createRollbarHandler'
-    arguments:
-      - '@service_container'
     tags:
       - { name: monolog.logger, channel: rollbar }
 

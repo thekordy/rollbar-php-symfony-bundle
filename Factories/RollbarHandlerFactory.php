@@ -12,7 +12,9 @@ use SymfonyRollbarBundle\DependencyInjection\SymfonyRollbarExtension;
 class RollbarHandlerFactory
 {
     
-    public function createRollbarHandler(ContainerInterface $container)
+    private $config;
+    
+    public function __construct(ContainerInterface $container)
     {
         $this->config = $container->getParameter(RollbarExtension::ALIAS . '.config');
         
@@ -20,15 +22,20 @@ class RollbarHandlerFactory
             $this->config['config']['access_token'] = $_ENV['ROLLBAR_TEST_TOKEN'];
         }
         
-        if (!isset($config['person']) || (isset($config['person']) && !$config['person'])) {
-            $config['person'] = $container->get('security.token_storage')
-                ->getToken()
-                ->getUser();
-        }
+        // if (!isset($config['person']) || (isset($config['person']) && !$config['person'])) {
+        //     $config['person'] = $container->get('security.token_storage')
+        //         ->getToken()
+        //         ->getUser();
+        // }
         
         if (!empty($this->config['enable'])) {
             Rollbar::init($this->config['config'], false, false, false);
-            
+        }
+    }
+    
+    public function createRollbarHandler()
+    {   
+        if (!empty($this->config['enable'])) {
             return new RollbarMonologHandler(
                 Rollbar::logger(),
                 Logger::ERROR
