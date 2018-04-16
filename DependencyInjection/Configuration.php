@@ -1,6 +1,6 @@
 <?php
 
-namespace SymfonyRollbarBundle\DependencyInjection;
+namespace Rollbar\Symfony\RollbarBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -8,7 +8,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 /**
  * Class Configuration
  * @link https://rollbar.com/docs/notifier/rollbar-php/#configuration-reference
- * @package SymfonyRollbarBundle\DependencyInjection
+ * @package Rollbar\Symfony\RollbarBundle\DependencyInjection
  */
 class Configuration implements ConfigurationInterface
 {
@@ -18,7 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder      = new TreeBuilder();
-        $rootNode         = $treeBuilder->root(SymfonyRollbarExtension::ALIAS);
+        $rootNode         = $treeBuilder->root(RollbarExtension::ALIAS);
 
         // the intendation in this method reflects the structure of the rootNode
         // for convenience
@@ -27,7 +27,7 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('enable')->defaultTrue()->end();
                 
             $rollbarConfigNode = $rootNode->children()
-                ->arrayNode('rollbar');
+                ->arrayNode('config');
             
         foreach (\Rollbar\Config::listOptions() as $option) {
             // TODO: this is duplicated code from

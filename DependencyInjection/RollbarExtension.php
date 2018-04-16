@@ -1,19 +1,24 @@
 <?php
 
-namespace SymfonyRollbarBundle\DependencyInjection;
+namespace Rollbar\Symfony\RollbarBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
+use Rollbar\Rollbar;
+use Rollbar\Monolog\Handler\RollbarHandler;
+use Monolog\Logger;
+use Psr\Logger\LoggerInterface;
+
 /**
  * Class Extension
- * @package SymfonyRollbarBundle\DependencyInjection
+ * @package Rollbar\Symfony\RollbarBundle\DependencyInjection
  */
-class SymfonyRollbarExtension extends Extension
+class RollbarExtension extends Extension
 {
-    const ALIAS = 'symfony_rollbar';
+    const ALIAS = 'rollbar';
 
     /**
      * Loads a specific configuration.
@@ -24,11 +29,11 @@ class SymfonyRollbarExtension extends Extension
      * @throws \InvalidArgumentException When provided tag is not defined in this extension
      */
     public function load(array $configs, ContainerBuilder $container)
-    {
+    { 
         $configuration = new Configuration();
         $config        = $this->processConfiguration($configuration, $configs);
 
-        if (!$config['enable']) {
+        if (empty($config['enable'])) {
             return;
         }
 

@@ -14,9 +14,13 @@ Find out [how Rollbar can help you decrease development and maintenance costs](h
 
 See [real companies improving their development workflow thanks to Rollbar](https://rollbar.com/customers/).
 
+## Requirements
+
+This bundle depends on [symfony/monolog-bundle](https://github.com/symfony/monolog-bundle).
+
 ## Installation
-1. Add SymfonyRollbarBundle with composer: `composer require oxcom/symfony-rollbar-bundle`
-2. Register SymfonyRollbarBundle in AppKernel::registerBundles()
+1. Add `Rollbar for Symfony` with composer: `composer require rollbar/rollbar-php-symfony3-bundle`
+2. Register `Rollbar\Symfony\RollbarBundle` in `AppKernel::registerBundles()` **after** registering the `MonologBundle` (`new Symfony\Bundle\MonologBundle\MonologBundle()`).
 
 ```php
 
@@ -25,6 +29,8 @@ See [real companies improving their development workflow thanks to Rollbar](http
         $bundles = [
             // ...
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+            // ...
+            new Symfony\Bundle\MonologBundle\MonologBundle(),
             // ...
             new \SymfonyRollbarBundle\SymfonyRollbarBundle(),
             // ...
@@ -35,15 +41,21 @@ See [real companies improving their development workflow thanks to Rollbar](http
     
 ```
 
-3. Configure Rollbar in `app/config_*.yml`.
+3. Configure Rollbar and Monolog in your `app/config.yml` or `app/config_*.yml`.
 
 ```yaml
 
-symfony_rollbar:
+rollbar:
   enable: true
-  rollbar:
+  config:
     access_token: YourAccessToken
     environment: YourEnvironmentName
+    
+monolog:
+    handlers:
+        rollbar:
+            type: service
+            id: Rollbar\Monolog\Handler\RollbarHandler
     
 ```
 
@@ -51,17 +63,53 @@ symfony_rollbar:
 
 You can see all of the Rollbar configuration options [here](https://github.com/rollbar/rollbar-php#configuration-reference).
 
-All of them can be configure by nesting them in `symfony_rollbar.rollbar` array, i.e.:
+All of them can be configure by nesting them in `rollbar.config` array, i.e.:
 
 ```yaml
 
-symfony_rollbar:
+rollbar:
   enable: true
-  rollbar:
+  config:
     access_token: YourAccessToken
     environment: YourEnvironmentName
     scrub_fields: [password, password_confirmation, credit_card_number]
     
+```
+
+### `person` configuration option
+
+By default, this bundle fetches the user data with `$container->get('security.token_storage')->getToken()->getUser()`. However, you can hardcode your own person data here. Although this might be used rarely, if you want to pass user data to Rollbar, you probably want to set up `person_fn` (see below).
+
+### `person_fn` configuration option
+
+*Note:* data returned by the `person_fn` callable will overwrite any data provided in `person` config or fetched from Symfony's `$container->get('security.token_storage')->getToken()->getUser()`.
+
+You can provide your own logic for retrieving user data with the `person_fn` configuration option. The value should be a PHP callable returning an array of data in the `person` format, i.e.:
+
+```yaml
+
+rollbar:
+    enable: true
+    config:
+        access_token: eb2561a52efb4d4bba5a1d4b68be13e9
+        environment: development
+        person_fn: '\Example\UserData::personFn'
+        
+```
+
+```php
+namespace Example;
+
+class UserData
+{
+  
+  public static function personFn()
+  {
+    return array(
+      'id' => '444'
+    );
+  }
+}
 ```
 
 ## Help / Support

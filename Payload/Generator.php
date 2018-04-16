@@ -1,6 +1,6 @@
 <?php
 
-namespace SymfonyRollbarBundle\Payload;
+namespace Rollbar\Symfony\RollbarBundle\Payload;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
