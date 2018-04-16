@@ -63,7 +63,7 @@ monolog:
 
 You can see all of the Rollbar configuration options [here](https://github.com/rollbar/rollbar-php#configuration-reference).
 
-All of them can be configure by nesting them in `rollbar.config` array, i.e.:
+All of them can be configured by nesting them in `rollbar.config` array, i.e.:
 
 ```yaml
 
