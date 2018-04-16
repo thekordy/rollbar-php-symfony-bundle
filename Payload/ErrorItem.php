@@ -1,6 +1,6 @@
 <?php
 
-namespace SymfonyRollbarBundle\Payload;
+namespace Rollbar\Symfony\RollbarBundle\Payload;
 
 class ErrorItem
 {

@@ -1,22 +1,33 @@
 <?php
 
-namespace SymfonyRollbarBundle\EventListener;
+namespace Rollbar\Symfony\RollbarBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Psr\Log\LoggerInterface;
+use Rollbar\Symfony\RollbarBundle\Payload\Generator;
 
-class ExceptionListener extends AbstractListener
+class ExceptionListener
 {
+    private $container;
+    private $logger;
+    private $generator;
+    
     /**
      * ErrorListener constructor.
      *
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Rollbar\Symfony\RollbarBundle\Payload\Generator $generator
      */
-    public function __construct(ContainerInterface $container)
-    {
-        parent::__construct($container);
-
-        set_exception_handler([$this, 'handleException']);
+    public function __construct(
+        ContainerInterface $container,
+        LoggerInterface $logger,
+        Generator $generator
+    ) {
+        $this->container = $container;
+        $this->logger = $logger;
+        $this->generator = $generator;
     }
 
     /**
@@ -43,9 +54,9 @@ class ExceptionListener extends AbstractListener
     public function handleException($exception)
     {
         // generate payload and log data
-        list($message, $payload) = $this->getGenerator()->getExceptionPayload($exception);
-
-        $this->getLogger()->error($message, [
+        list($message, $payload) = $this->generator->getExceptionPayload($exception);
+        
+        $this->logger->error($message, [
             'payload' => $payload,
         ]);
     }
