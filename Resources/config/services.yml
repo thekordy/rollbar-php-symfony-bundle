@@ -1,8 +1,3 @@
-# parameters:
-#   symfony_rollbar.event_listener.exception_listener.class: SymfonyRollbarBundle\EventListener\ExceptionListener
-#   symfony_rollbar.event_listener.error_listener.class: SymfonyRollbarBundle\EventListener\ErrorListener
-#   symfony_rollbar.provider.rollbar_handler.class: SymfonyRollbarBundle\Provider\RollbarHandler
-#   symfony_rollbar.payload.generator.class: SymfonyRollbarBundle\Payload\Generator
 services:
   Rollbar\Symfony\RollbarBundle\EventListener\ExceptionListener:
     arguments:
@@ -11,13 +6,6 @@ services:
       - '@Rollbar\Symfony\RollbarBundle\Payload\Generator'
     tags:
       - { name: kernel.event_listener, event: kernel.exception, priority: -100 }
-  
-  # Rollbar\Symfony\RollbarBundle\EventListener\ControllerListener:
-  #   arguments:
-  #     - '@service_container'
-  #     - '@logger'
-  #   tags:
-  #     - { name: kernel.event_listener, event: kernel.controller }
 
 #   symfony_rollbar.event_listener.error_listener:
 #     class: SymfonyRollbarBundle\EventListener\ErrorListener

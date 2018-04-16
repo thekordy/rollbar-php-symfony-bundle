@@ -20,12 +20,11 @@ class RollbarHandlerFactory
             $this->config['config']['access_token'] = $_ENV['ROLLBAR_TEST_TOKEN'];
         }
         
-        // if (!isset($config['person']) || (isset($config['person']) && !$config['person'])) {
-        //     $config['person'] = $this->getContainer()
-        //         ->get('security.token_storage')
-        //         ->getToken()
-        //         ->getUser();
-        // }
+        if (!isset($config['person']) || (isset($config['person']) && !$config['person'])) {
+            $config['person'] = $container->get('security.token_storage')
+                ->getToken()
+                ->getUser();
+        }
         
         if (!empty($this->config['enable'])) {
             Rollbar::init($this->config['config'], false, false, false);
