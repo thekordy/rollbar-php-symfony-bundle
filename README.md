@@ -52,10 +52,10 @@ rollbar:
     environment: YourEnvironmentName
     
 monolog:
-    handlers:
-        rollbar:
-            type: service
-            id: Rollbar\Monolog\Handler\RollbarHandler
+  handlers:
+    rollbar:
+      type: service
+      id: Rollbar\Monolog\Handler\RollbarHandler
     
 ```
 
