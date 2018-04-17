@@ -30,19 +30,23 @@ class RollbarExtensionTest extends AbstractExtensionTestCase
      * @dataProvider generatorConfigVars
      *
      * @param string $var
-     * @param mixed  $value
+     * @param mixed  $values
      */
-    public function testConfigEnabledVars($var, $value)
+    public function testConfigEnabledVars($var, $expected)
     {
         $this->load();
 
-        $this->assertContainerBuilderHasParameter($var, $value);
+        $param = $this->container->getParameter($var);
+        
+        foreach ($expected as $key => $value) {
+            $this->assertEquals($param[$key], $value);
+        }
     }
 
     public function generatorConfigVars()
     {
         return [
-            ['rollbar.config', ['enable' => true]],
+            ['rollbar.config', ['enabled' => true]],
         ];
     }
 
@@ -54,11 +58,15 @@ class RollbarExtensionTest extends AbstractExtensionTestCase
      * @param string $var
      * @param mixed  $value
      */
-    public function testConfigDisabledVars($var, $value)
+    public function testConfigDisabledVars($var, $expected)
     {
-        $this->load(['enable' => false]);
+        $this->load(['enabled' => false]);
 
-        $this->assertContainerBuilderHasParameter($var, $value);
+        $param = $this->container->getParameter($var);
+        
+        foreach ($expected as $key => $value) {
+            $this->assertEquals($param[$key], $value);
+        }
     }
 
     public function testAlias()

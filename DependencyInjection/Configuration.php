@@ -17,17 +17,11 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder      = new TreeBuilder();
-        $rootNode         = $treeBuilder->root(RollbarExtension::ALIAS);
+        $treeBuilder = new TreeBuilder();
+        $rollbarConfigNode = $treeBuilder->root(RollbarExtension::ALIAS);
 
         // the intendation in this method reflects the structure of the rootNode
         // for convenience
-
-        $rootNode->children()
-            ->scalarNode('enable')->defaultTrue()->end();
-                
-            $rollbarConfigNode = $rootNode->children()
-                ->arrayNode('config');
             
         foreach (\Rollbar\Config::listOptions() as $option) {
             // TODO: this is duplicated code from
@@ -53,13 +47,14 @@ class Configuration implements ConfigurationInterface
                 \Rollbar\Defaults::get()->$method() :
                 null;
                     
-            $rollbarConfigNode->children()
-            ->scalarNode($option)->defaultValue($default)->end();
+            $rollbarConfigNode
+                ->children()
+                ->scalarNode($option)
+                ->defaultValue($default)
+                ->end();
         }
-                
-            $rollbarConfigNode->end();
         
-        $rootNode->end();
+        $rollbarConfigNode->end();
 
         return $treeBuilder;
     }

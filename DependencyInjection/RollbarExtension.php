@@ -33,10 +33,6 @@ class RollbarExtension extends Extension
         $configuration = new Configuration();
         $config        = $this->processConfiguration($configuration, $configs);
 
-        if (empty($config['enable'])) {
-            return;
-        }
-
         // load services and register listeners
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');

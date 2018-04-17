@@ -3,8 +3,6 @@ imports:
     - { resource: parameters.yml }
 
 rollbar:
-  enable: true
-  config:
     access_token: ~
 
 monolog:

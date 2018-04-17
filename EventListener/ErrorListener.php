@@ -96,9 +96,9 @@ class ErrorListener extends AbstractListener
         $config = $this->getContainer()->getParameter(RollbarExtension::ALIAS . '.config');
 
         return true
-            && $config['enable']
-            && !(error_reporting() === 0 && $config['config']['report_suppressed'])
-            && !(($config['config']['use_error_reporting'] && (error_reporting() & $code) === 0))
-            && !($config['config']['included_errno'] != -1 && ($code & $config['config']['included_errno']) != $code);
+            && $config['enabled']
+            && !(error_reporting() === 0 && $config['report_suppressed'])
+            && !(($config['use_error_reporting'] && (error_reporting() & $code) === 0))
+            && !($config['included_errno'] != -1 && ($code & $config['included_errno']) != $code);
     }
 }

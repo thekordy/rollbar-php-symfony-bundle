@@ -46,14 +46,8 @@ class ConfigurationTest extends KernelTestCase
                     
             $defaults[$option] = $default;
         }
-        
-        
-        $default = [
-            'enable' => true,
-            'config' => $defaults
-        ];
 
         $this->assertNotEmpty($config);
-        $this->assertEquals($default, $config);
+        $this->assertEquals($defaults, $config);
     }
 }

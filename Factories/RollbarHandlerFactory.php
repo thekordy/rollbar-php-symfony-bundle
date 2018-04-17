@@ -19,37 +19,37 @@ class RollbarHandlerFactory
         $this->config = $container->getParameter(RollbarExtension::ALIAS . '.config');
         
         if (isset($_ENV['ROLLBAR_TEST_TOKEN']) && $_ENV['ROLLBAR_TEST_TOKEN']) {
-            $this->config['config']['access_token'] = $_ENV['ROLLBAR_TEST_TOKEN'];
+            $this->config['access_token'] = $_ENV['ROLLBAR_TEST_TOKEN'];
         }
         
-        if (empty($this->config['config']['person'])) {
+        if (empty($this->config['person'])) {
             try {
                 if ($token = $container->get('security.token_storage')->getToken()) {
-                    $this->config['config']['person'] = $token->getUser();
+                    $this->config['person'] = $token->getUser();
                 }
             } catch (\Exception $exception) {
             }
         }
         
-        if (!empty($this->config['config']['person_fn']) &&
-            is_callable($this->config['config']['person_fn']) ) {
-            $this->config['config']['person'] = null;
+        if (!empty($this->config['person_fn']) &&
+            is_callable($this->config['person_fn']) ) {
+            $this->config['person'] = null;
         }
         
-        if (!empty($this->config['enable'])) {
-            Rollbar::init($this->config['config'], false, false, false);
-        }
+        // if (!empty($this->config['enable'])) {
+            Rollbar::init($this->config, false, false, false);
+        // }
     }
     
     public function createRollbarHandler()
     {
-        if (!empty($this->config['enable'])) {
+        // if (!empty($this->config['enable'])) {
             return new RollbarMonologHandler(
                 Rollbar::logger(),
                 Logger::ERROR
             );
-        }
+        // }
         
-        return null;
+        // return null;
     }
 }

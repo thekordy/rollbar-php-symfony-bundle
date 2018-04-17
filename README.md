@@ -46,10 +46,8 @@ This bundle depends on [symfony/monolog-bundle](https://github.com/symfony/monol
 ```yaml
 
 rollbar:
-  enable: true
-  config:
-    access_token: YourAccessToken
-    environment: YourEnvironmentName
+  access_token: YourAccessToken
+  environment: YourEnvironmentName
     
 monolog:
   handlers:
@@ -107,11 +105,9 @@ All of them can be configured by nesting them in `rollbar.config` array, i.e.:
 ```yaml
 
 rollbar:
-  enable: true
-  config:
-    access_token: YourAccessToken
-    environment: YourEnvironmentName
-    scrub_fields: [password, password_confirmation, credit_card_number]
+  access_token: YourAccessToken
+  environment: YourEnvironmentName
+  scrub_fields: [password, password_confirmation, credit_card_number]
     
 ```
 
@@ -128,11 +124,9 @@ You can provide your own logic for retrieving user data with the `person_fn` con
 ```yaml
 
 rollbar:
-    enable: true
-    config:
-        access_token: YourAccessToken
-        environment: YourEnvironmentName
-        person_fn: '\Example\UserData::personFn'
+  access_token: YourAccessToken
+  environment: YourEnvironmentName
+  person_fn: '\Example\UserData::personFn'
         
 ```
 
