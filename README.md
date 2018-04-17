@@ -100,7 +100,7 @@ All you need to do is obtain the `LoggerInterface` implementation from the servi
 
 You can see all of the Rollbar configuration options [here](https://github.com/rollbar/rollbar-php#configuration-reference).
 
-All of them can be configured by nesting them in `rollbar.config` array, i.e.:
+All of them can be configured by nesting them in the `rollbar` array, i.e.:
 
 ```yaml
 
