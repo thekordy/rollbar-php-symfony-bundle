@@ -43,9 +43,9 @@
     "scripts": {
         "test": [
             "composer install",
-            "./vendor/bin/phpcs --standard=psr2 DependencyInjection/ EventListener/ Factories/ Payload/ Tests/DependencyInjection/ Tests/EventListener/ Tests/Payload/ Tests/Provider/ Tests/RollbarBundleTest.php",
+            "./vendor/bin/phpcs --standard=psr2 DependencyInjection/ EventListener/ Factories/ Payload/ Tests/DependencyInjection/ Tests/EventListener/ Tests/Payload/ Tests/RollbarBundleTest.php",
             "./vendor/bin/phpunit -c ."
         ],
-        "fix": "phpcbf --standard=PSR1,PSR2 DependencyInjection/ EventListener/ Factories/ Payload/ Tests/DependencyInjection/ Tests/EventListener/ Tests/Payload/ Tests/Provider/ Tests/RollbarBundleTest.php"
+        "fix": "phpcbf --standard=PSR1,PSR2 DependencyInjection/ EventListener/ Factories/ Payload/ Tests/DependencyInjection/ Tests/EventListener/ Tests/Payload/ Tests/RollbarBundleTest.php"
     }
 }
