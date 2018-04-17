@@ -36,8 +36,7 @@ class RollbarBundleTest extends KernelTestCase
 
         $expected = [
             \Rollbar\Symfony\RollbarBundle\EventListener\ErrorListener::class,
-            \Rollbar\Symfony\RollbarBundle\EventListener\ExceptionListener::class,
-            \Rollbar\Symfony\RollbarBundle\EventListener\ControllerListener::class
+            \Rollbar\Symfony\RollbarBundle\EventListener\ExceptionListener::class
         ];
         
         foreach ($listeners as $listener) {

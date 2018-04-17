@@ -15,12 +15,6 @@ services:
     tags:
       - { name: kernel.event_listener, event: kernel.exception }
 
-#   symfony_rollbar.event_listener.error_listener:
-#     class: SymfonyRollbarBundle\EventListener\ErrorListener
-#     arguments: ["@service_container"]
-#     tags:
-#       - { name: kernel.event_listener, event: kernel.exception }
-
   Rollbar\Symfony\RollbarBundle\Factories\RollbarHandlerFactory:
     arguments:
       - '@service_container'
