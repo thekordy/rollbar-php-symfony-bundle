@@ -36,20 +36,14 @@ class RollbarHandlerFactory
             $this->config['person'] = null;
         }
         
-        // if (!empty($this->config['enable'])) {
-            Rollbar::init($this->config, false, false, false);
-        // }
+        Rollbar::init($this->config, false, false, false);
     }
     
     public function createRollbarHandler()
     {
-        // if (!empty($this->config['enable'])) {
-            return new RollbarMonologHandler(
-                Rollbar::logger(),
-                Logger::ERROR
-            );
-        // }
-        
-        // return null;
+        return new RollbarMonologHandler(
+            Rollbar::logger(),
+            Logger::ERROR
+        );
     }
 }
