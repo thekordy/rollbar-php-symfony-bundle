@@ -20,7 +20,7 @@ This bundle depends on [symfony/monolog-bundle](https://github.com/symfony/monol
 
 ## Installation
 1. Add `Rollbar for Symfony` with composer: `composer require rollbar/rollbar-php-symfony3-bundle`
-2. Register `Rollbar\Symfony\RollbarBundle` in `AppKernel::registerBundles()` **after** registering the `MonologBundle` (`new Symfony\Bundle\MonologBundle\MonologBundle()`).
+2. Register `Rollbar\Symfony\RollbarBundle\RollbarBundle` in `AppKernel::registerBundles()` **after** registering the `MonologBundle` (`new Symfony\Bundle\MonologBundle\MonologBundle()`).
 
 ```php
 
@@ -28,11 +28,11 @@ This bundle depends on [symfony/monolog-bundle](https://github.com/symfony/monol
     {
         $bundles = [
             // ...
-            new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             // ...
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             // ...
-            new \SymfonyRollbarBundle\SymfonyRollbarBundle(),
+            new Rollbar\Symfony\RollbarBundle\RollbarBundle(),
             // ...
         ];
 
