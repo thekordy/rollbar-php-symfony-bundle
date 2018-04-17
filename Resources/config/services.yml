@@ -6,6 +6,14 @@ services:
       - '@Rollbar\Symfony\RollbarBundle\Payload\Generator'
     tags:
       - { name: kernel.event_listener, event: kernel.exception, priority: -100 }
+      
+  Rollbar\Symfony\RollbarBundle\EventListener\ErrorListener:
+    arguments:
+      - '@service_container'
+      - '@logger'
+      - '@Rollbar\Symfony\RollbarBundle\Payload\Generator'
+    tags:
+      - { name: kernel.event_listener, event: kernel.exception }
 
 #   symfony_rollbar.event_listener.error_listener:
 #     class: SymfonyRollbarBundle\EventListener\ErrorListener

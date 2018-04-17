@@ -1,21 +1,34 @@
 <?php
 
-namespace SymfonyRollbarBundle\EventListener;
+namespace Rollbar\Symfony\RollbarBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use SymfonyRollbarBundle\DependencyInjection\SymfonyRollbarExtension;
+use Rollbar\Symfony\RollbarBundle\DependencyInjection\RollbarExtension;
+use Psr\Log\LoggerInterface;
+use Rollbar\Symfony\RollbarBundle\Payload\Generator;
 
-class ErrorListener extends AbstractListener
+class ErrorListener
 {
+    private $container;
+    private $logger;
+    private $generator;
+    
     /**
      * ErrorListener constructor.
      *
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Rollbar\Symfony\RollbarBundle\Payload\Generator $generator
      */
-    public function __construct(ContainerInterface $container)
-    {
-        parent::__construct($container);
+    public function __construct(
+        ContainerInterface $container,
+        LoggerInterface $logger,
+        Generator $generator
+    ) {
+        $this->container = $container;
+        $this->logger = $logger;
+        $this->generator = $generator;
 
         // here only errors, so we have to setup handler here
         set_error_handler([$this, 'handleError']);
@@ -38,9 +51,9 @@ class ErrorListener extends AbstractListener
             return;
         }
 
-        list($message, $payload) = $this->getGenerator()->getErrorPayload($code, $message, $file, $line);
+        list($message, $payload) = $this->generator->getErrorPayload($code, $message, $file, $line);
 
-        $this->getLogger()->error($message, [
+        $this->logger->error($message, [
             'payload' => $payload,
         ]);
     }
@@ -86,13 +99,13 @@ class ErrorListener extends AbstractListener
     protected function isReportable($code)
     {
         $code = (int)$code;
-        $config = $this->getContainer()->getParameter(SymfonyRollbarExtension::ALIAS . '.config');
+        $config = $this->container->getParameter(RollbarExtension::ALIAS . '.config');
 
         return true
             && $config['enable']
-            && !(error_reporting() === 0 && $config['rollbar']['report_suppressed'])
-            && !(($config['rollbar']['use_error_reporting'] && (error_reporting() & $code) === 0))
-            && !($config['rollbar']['included_errno'] != -1 && ($code & $config['rollbar']['included_errno']) != $code);
+            && !(error_reporting() === 0 && $config['config']['report_suppressed'])
+            && !(($config['config']['use_error_reporting'] && (error_reporting() & $code) === 0))
+            && !($config['config']['included_errno'] != -1 && ($code & $config['config']['included_errno']) != $code);
     }
 
     /**
