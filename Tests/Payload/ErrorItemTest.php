@@ -1,12 +1,12 @@
 <?php
-namespace Tests\SymfonyRollbarBundle\Payload;
+namespace Rollbar\Symfony\RollbarBundle\Tests\Payload;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use SymfonyRollbarBundle\Payload\ErrorItem;
+use Rollbar\Symfony\RollbarBundle\Payload\ErrorItem;
 
 /**
  * Class ErrorItemTest
- * @package Tests\SymfonyRollbarBundle\Payload
+ * @package Rollbar\Symfony\RollbarBundle
  */
 class ErrorItemTest extends KernelTestCase
 {

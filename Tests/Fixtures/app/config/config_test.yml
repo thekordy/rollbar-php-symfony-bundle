@@ -2,7 +2,13 @@ imports:
     - { resource: config.yml }
     - { resource: parameters.yml }
 
-symfony_rollbar:
+rollbar:
   enable: true
-  rollbar:
+  config:
     access_token: ~
+
+monolog:
+    handlers:
+        rollbar:
+            type: service
+            id: Rollbar\Monolog\Handler\RollbarHandler

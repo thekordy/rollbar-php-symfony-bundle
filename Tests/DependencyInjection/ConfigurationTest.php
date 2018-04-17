@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\SymfonyRollbarBundle\DependencyInjection;
+namespace Rollbar\Symfony\RollbarBundle\Tests\DependencyInjection;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use SymfonyRollbarBundle\DependencyInjection\Configuration;
-use SymfonyRollbarBundle\DependencyInjection\SymfonyRollbarExtension;
+use Rollbar\Symfony\RollbarBundle\DependencyInjection\Configuration;
+use Rollbar\Symfony\RollbarBundle\DependencyInjection\RollbarExtension;
 
 /**
  * Class ConfigurationTest
- * @package Tests\SymfonyRollbarBundle\DependencyInjection
+ * @package Rollbar\Symfony\Tests\DependencyInjection
  */
 class ConfigurationTest extends KernelTestCase
 {
@@ -17,7 +17,7 @@ class ConfigurationTest extends KernelTestCase
         static::bootKernel();
         $container = static::$kernel->getContainer();
 
-        $config           = $container->getParameter(SymfonyRollbarExtension::ALIAS . '.config');
+        $config           = $container->getParameter(RollbarExtension::ALIAS . '.config');
         
         $defaults = [];
         foreach (\Rollbar\Config::listOptions() as $option) {
@@ -50,7 +50,7 @@ class ConfigurationTest extends KernelTestCase
         
         $default = [
             'enable' => true,
-            'rollbar' => $defaults
+            'config' => $defaults
         ];
 
         $this->assertNotEmpty($config);

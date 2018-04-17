@@ -1,13 +1,13 @@
 <?php
-namespace Tests\SymfonyRollbarBundle\Payload;
+namespace Rollbar\Symfony\RollbarBundle\Tests\Payload;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
-use SymfonyRollbarBundle\Payload\TraceItem;
+use Rollbar\Symfony\RollbarBundle\Payload\TraceItem;
 
 /**
  * Class TraceItemTest
- * @package Tests\SymfonyRollbarBundle\Payload
+ * @package Rollbar\Symfony\RollbarBundle\Tests\Payload
  */
 class TraceItemTest extends KernelTestCase
 {

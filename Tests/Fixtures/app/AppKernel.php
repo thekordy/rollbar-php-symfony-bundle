@@ -9,7 +9,8 @@ class AppKernel extends Kernel
     {
         $bundles = [
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new \SymfonyRollbarBundle\SymfonyRollbarBundle(),
+            new \Symfony\Bundle\MonologBundle\MonologBundle(),
+            new \Rollbar\Symfony\RollbarBundle\RollbarBundle(),
         ];
 
         return $bundles;

@@ -1,5 +1,5 @@
 <?php
-namespace Rollbar\Symfony\Tests;
+namespace Rollbar\Symfony\RollbarBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Class RollbarBundleTest
- * @package Tests\SymfonyRollbarBundle
+ * @package Rollbar\Symfony\RollbarBundle
  */
 class RollbarBundleTest extends KernelTestCase
 {
@@ -31,12 +31,11 @@ class RollbarBundleTest extends KernelTestCase
         $listeners = $eventDispatcher->getListeners('kernel.exception');
 
         $expected = [
-            \SymfonyRollbarBundle\EventListener\AbstractListener::class,
-            \Symfony\Component\HttpKernel\EventListener\ExceptionListener::class,
+            \Rollbar\Symfony\RollbarBundle\EventListener\ExceptionListener::class,
         ];
 
         foreach ($listeners as $listener) {
-            $ok = $listener[0] instanceof $expected[0] || $listener[0] instanceof $expected[1];
+            $ok = $listener[0] instanceof $expected[0];
             $this->assertTrue($ok, 'Listeners were not registered');
         }
     }

@@ -30,7 +30,8 @@
         "rollbar/rollbar": "^1",
         "symfony/dependency-injection": "^3.2",
         "symfony/config": "^3.2",
-        "symfony/http-kernel": "^3.2"
+        "symfony/http-kernel": "^3.2",
+        "symfony/monolog-bundle": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.7",
@@ -41,9 +42,9 @@
     "scripts": {
         "test": [
             "composer install",
-            "./vendor/bin/phpcs --standard=psr2 src/ tests/SymfonyRollbarBundle",
-            "./vendor/bin/phpunit --coverage-clover build/logs/clover.xml -c tests/"
+            "./vendor/bin/phpcs --standard=psr2 DependencyInjection/ EventListener/ Factories/ Payload/ Tests/DependencyInjection/ Tests/EventListener/ Tests/Payload/ Tests/Provider/ Tests/RollbarBundleTest.php",
+            "./vendor/bin/phpunit -c ."
         ],
-        "fix": "phpcbf --standard=PSR1,PSR2 src tests"
+        "fix": "phpcbf --standard=PSR1,PSR2 DependencyInjection/ EventListener/ Factories/ Payload/ Tests/DependencyInjection/ Tests/EventListener/ Tests/Payload/ Tests/Provider/ Tests/RollbarBundleTest.php"
     }
 }

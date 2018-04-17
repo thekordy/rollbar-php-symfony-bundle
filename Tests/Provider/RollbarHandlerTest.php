@@ -1,30 +1,30 @@
 <?php
-namespace Tests\SymfonyRollbarBundle\Provider;
+// namespace Tests\SymfonyRollbarBundle\Provider;
 
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+// use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-/**
- * Class RollbarHandlerTest
- * @package Tests\SymfonyRollbarBundle\Provider
- */
-class RollbarHandlerTest extends KernelTestCase
-{
-    public function setUp()
-    {
-        parent::setUp();
+// /**
+//  * Class RollbarHandlerTest
+//  * @package Tests\SymfonyRollbarBundle\Provider
+//  */
+// class RollbarHandlerTest extends KernelTestCase
+// {
+//     public function setUp()
+//     {
+//         parent::setUp();
 
-        static::bootKernel();
-    }
+//         static::bootKernel();
+//     }
 
-    public function testRollbarHandler()
-    {
-        $container = static::$kernel->getContainer();
-        $provider  = new \SymfonyRollbarBundle\Provider\RollbarHandler($container);
+//     public function testRollbarHandler()
+//     {
+//         $container = static::$kernel->getContainer();
+//         $provider  = new \SymfonyRollbarBundle\Provider\RollbarHandler($container);
 
-        $cntr = $provider->getContainer();
-        $this->assertEquals($container, $cntr);
+//         $cntr = $provider->getContainer();
+//         $this->assertEquals($container, $cntr);
 
-        $handler = $provider->getHandler();
-        $this->assertInstanceOf(\Rollbar\Monolog\Handler\RollbarHandler::class, $handler);
-    }
-}
+//         $handler = $provider->getHandler();
+//         $this->assertInstanceOf(\Rollbar\Monolog\Handler\RollbarHandler::class, $handler);
+//     }
+// }

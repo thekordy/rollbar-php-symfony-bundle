@@ -29,7 +29,7 @@ class RollbarExtension extends Extension
      * @throws \InvalidArgumentException When provided tag is not defined in this extension
      */
     public function load(array $configs, ContainerBuilder $container)
-    { 
+    {
         $configuration = new Configuration();
         $config        = $this->processConfiguration($configuration, $configs);
 

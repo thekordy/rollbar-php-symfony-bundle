@@ -23,17 +23,17 @@ class RollbarHandlerFactory
         }
         
         if (empty($this->config['config']['person'])) {
-            
-            if ($token = $container->get('security.token_storage')->getToken()) {
-                $this->config['config']['person'] = $token->getUser();
+            try {
+                if ($token = $container->get('security.token_storage')->getToken()) {
+                    $this->config['config']['person'] = $token->getUser();
+                }
+            } catch (\Exception $exception) {
             }
         }
         
-        if (!empty($this->config['config']['person_fn']) && 
+        if (!empty($this->config['config']['person_fn']) &&
             is_callable($this->config['config']['person_fn']) ) {
-            
             $this->config['config']['person'] = null;
-            
         }
         
         if (!empty($this->config['enable'])) {
@@ -42,7 +42,7 @@ class RollbarHandlerFactory
     }
     
     public function createRollbarHandler()
-    {   
+    {
         if (!empty($this->config['enable'])) {
             return new RollbarMonologHandler(
                 Rollbar::logger(),
@@ -52,5 +52,4 @@ class RollbarHandlerFactory
         
         return null;
     }
-
 }
