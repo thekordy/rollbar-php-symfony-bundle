@@ -31,11 +31,12 @@ class RollbarBundleTest extends KernelTestCase
         $listeners = $eventDispatcher->getListeners('kernel.exception');
 
         $expected = [
+            \Rollbar\Symfony\RollbarBundle\EventListener\ErrorListener::class,
             \Rollbar\Symfony\RollbarBundle\EventListener\ExceptionListener::class,
         ];
-
+        
         foreach ($listeners as $listener) {
-            $ok = $listener[0] instanceof $expected[0];
+            $ok = $listener[0] instanceof $expected[0] || $listener[0] instanceof $expected[1];
             $this->assertTrue($ok, 'Listeners were not registered');
         }
     }

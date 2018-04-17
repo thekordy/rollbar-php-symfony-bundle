@@ -7,29 +7,8 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Psr\Log\LoggerInterface;
 use Rollbar\Symfony\RollbarBundle\Payload\Generator;
 
-class ExceptionListener
+class ExceptionListener extends AbstractListener
 {
-    private $container;
-    private $logger;
-    private $generator;
-    
-    /**
-     * ErrorListener constructor.
-     *
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Rollbar\Symfony\RollbarBundle\Payload\Generator $generator
-     */
-    public function __construct(
-        ContainerInterface $container,
-        LoggerInterface $logger,
-        Generator $generator
-    ) {
-        $this->container = $container;
-        $this->logger = $logger;
-        $this->generator = $generator;
-    }
-
     /**
      * Process exception
      *
@@ -54,9 +33,9 @@ class ExceptionListener
     public function handleException($exception)
     {
         // generate payload and log data
-        list($message, $payload) = $this->generator->getExceptionPayload($exception);
+        list($message, $payload) = $this->getGenerator()->getExceptionPayload($exception);
         
-        $this->logger->error($message, [
+        $this->getLogger()->error($message, [
             'payload' => $payload,
         ]);
     }

@@ -21,7 +21,8 @@
     },
     "autoload-dev": {
         "files": [
-            "Tests/Fixtures/app/AppKernel.php"
+            "Tests/Fixtures/app/AppKernel.php",
+            "Tests/Fixtures/ErrorHandler.php"
             ],
         "psr-4": { "Tests\\": "tests/"}
     },

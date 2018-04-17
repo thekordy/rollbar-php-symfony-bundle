@@ -8,12 +8,8 @@ use Rollbar\Symfony\RollbarBundle\DependencyInjection\RollbarExtension;
 use Psr\Log\LoggerInterface;
 use Rollbar\Symfony\RollbarBundle\Payload\Generator;
 
-class ErrorListener
+class ErrorListener extends AbstractListener
 {
-    private $container;
-    private $logger;
-    private $generator;
-    
     /**
      * ErrorListener constructor.
      *
@@ -26,9 +22,7 @@ class ErrorListener
         LoggerInterface $logger,
         Generator $generator
     ) {
-        $this->container = $container;
-        $this->logger = $logger;
-        $this->generator = $generator;
+        parent::__construct($container, $logger, $generator);
 
         // here only errors, so we have to setup handler here
         set_error_handler([$this, 'handleError']);
@@ -51,9 +45,9 @@ class ErrorListener
             return;
         }
 
-        list($message, $payload) = $this->generator->getErrorPayload($code, $message, $file, $line);
+        list($message, $payload) = $this->getGenerator()->getErrorPayload($code, $message, $file, $line);
 
-        $this->logger->error($message, [
+        $this->getLogger()->error($message, [
             'payload' => $payload,
         ]);
     }
@@ -99,20 +93,12 @@ class ErrorListener
     protected function isReportable($code)
     {
         $code = (int)$code;
-        $config = $this->container->getParameter(RollbarExtension::ALIAS . '.config');
+        $config = $this->getContainer()->getParameter(RollbarExtension::ALIAS . '.config');
 
         return true
             && $config['enable']
             && !(error_reporting() === 0 && $config['config']['report_suppressed'])
             && !(($config['config']['use_error_reporting'] && (error_reporting() & $code) === 0))
             && !($config['config']['included_errno'] != -1 && ($code & $config['config']['included_errno']) != $code);
-    }
-
-    /**
-     * @param \Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent $event
-     */
-    public function onKernelException(GetResponseForExceptionEvent $event)
-    {
-        // dummy
     }
 }
