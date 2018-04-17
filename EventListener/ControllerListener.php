@@ -37,7 +37,6 @@ class ControllerListener
      */
     public function onKernelController(FilterControllerEvent $event)
     {
-        var_dump('push handler');
         $this->logger->pushHandler(
             new RollbarMonologHandler(
                 Rollbar::logger(),
