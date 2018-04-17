@@ -29,10 +29,15 @@ class RollbarBundleTest extends KernelTestCase
          */
         $eventDispatcher = $container->get('event_dispatcher');
         $listeners = $eventDispatcher->getListeners('kernel.exception');
+        $listeners = array_merge(
+            $listeners,
+            $eventDispatcher->getListeners('kernel.controller')
+        );
 
         $expected = [
             \Rollbar\Symfony\RollbarBundle\EventListener\ErrorListener::class,
             \Rollbar\Symfony\RollbarBundle\EventListener\ExceptionListener::class,
+            \Rollbar\Symfony\RollbarBundle\EventListener\ControllerListener::class
         ];
         
         foreach ($listeners as $listener) {
