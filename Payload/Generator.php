@@ -4,19 +4,30 @@ namespace Rollbar\Symfony\RollbarBundle\Payload;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Kernel;
 
+/**
+ * Class Generator
+ *
+ * @package Rollbar\Symfony\RollbarBundle\Payload
+ */
 class Generator
 {
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     * @var ContainerInterface
      */
     protected $container;
 
     /**
-     * @var \Symfony\Component\HttpKernel\Kernel
+     * @var Kernel
      */
     protected $kernel;
 
+    /**
+     * Generator constructor.
+     *
+     * @param ContainerInterface $container
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
@@ -38,7 +49,7 @@ class Generator
          */
         $payload = [
             'body'             => [],
-            'framework'        => \Symfony\Component\HttpKernel\Kernel::VERSION,
+            'framework'        => Kernel::VERSION,
             'server'           => $this->getServerInfo(),
             'language_version' => phpversion(),
             'request'          => $this->getRequestInfo(),
@@ -65,9 +76,11 @@ class Generator
     }
 
     /**
-     * @param $object
-     * @param $file
-     * @param $line
+     * Build generator error.
+     *
+     * @param object $object
+     * @param string $file
+     * @param int    $line
      *
      * @return array
      */
@@ -79,6 +92,8 @@ class Generator
     }
 
     /**
+     * Get error payload.
+     *
      * @param int    $code
      * @param string $message
      * @param string $file
@@ -88,16 +103,13 @@ class Generator
      */
     public function getErrorPayload($code, $message, $file, $line)
     {
-        /**
-         * @var \Symfony\Component\HttpFoundation\Request $request
-         */
         $item = new ErrorItem();
 
         $payload = [
             'body'             => ['trace' => $item($code, $message, $file, $line)],
             'request'          => $this->getRequestInfo(),
             'environment'      => $this->getKernel()->getEnvironment(),
-            'framework'        => \Symfony\Component\HttpKernel\Kernel::VERSION,
+            'framework'        => Kernel::VERSION,
             'language_version' => phpversion(),
             'server'           => $this->getServerInfo(),
         ];
@@ -106,13 +118,12 @@ class Generator
     }
 
     /**
+     * Get request info.
+     *
      * @return array
      */
     protected function getRequestInfo()
     {
-        /**
-         * @var \Symfony\Component\HttpFoundation\Request $request
-         */
         $request = $this->getContainer()->get('request_stack')->getCurrentRequest();
         if (empty($request)) {
             $request = new Request();
@@ -129,6 +140,8 @@ class Generator
     }
 
     /**
+     * Get server info.
+     *
      * @return array
      */
     protected function getServerInfo()
@@ -146,7 +159,9 @@ class Generator
     }
 
     /**
-     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     * Get container.
+     *
+     * @return ContainerInterface
      */
     public function getContainer()
     {
@@ -154,7 +169,9 @@ class Generator
     }
 
     /**
-     * @return \Symfony\Component\HttpKernel\Kernel
+     * Get kernel.
+     *
+     * @return Kernel
      */
     public function getKernel()
     {

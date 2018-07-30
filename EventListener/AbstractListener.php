@@ -2,51 +2,57 @@
 
 namespace Rollbar\Symfony\RollbarBundle\EventListener;
 
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
+use Rollbar\Symfony\RollbarBundle\Payload\Generator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Monolog\Logger;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Rollbar\Symfony\RollbarBundle\DependencyInjection\SymfonyRollbarExtension;
-use Rollbar\Symfony\RollbarBundle\Payload\Generator;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class AbstractListener
+ *
  * @package Rollbar\Symfony\RollbarBundle\EventListener
  */
 abstract class AbstractListener implements EventSubscriberInterface
 {
     /**
-     * @var \Monolog\Logger
+     * @var Logger
      */
     protected $logger;
 
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     * @var ContainerInterface
      */
     protected $container;
 
     /**
-     * @var \Rollbar\Symfony\RollbarBundle\Payload\Generator
+     * @var Generator
      */
     protected $generator;
 
+    /**
+     * AbstractListener constructor.
+     *
+     * @param ContainerInterface $container
+     * @param LoggerInterface    $logger
+     * @param Generator          $generator
+     */
     public function __construct(
         ContainerInterface $container,
         LoggerInterface $logger,
         Generator $generator
     ) {
-        /**
-         * @var \Rollbar\Symfony\RollbarBundle\Provider\RollbarHandler $rbProvider
-         */
         $this->container = $container;
         $this->logger = $logger;
         $this->generator = $generator;
     }
 
     /**
-     * @return \Monolog\Logger
+     * Get logger.
+     *
+     * @return Logger
      */
     public function getLogger()
     {
@@ -54,7 +60,7 @@ abstract class AbstractListener implements EventSubscriberInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
@@ -64,7 +70,9 @@ abstract class AbstractListener implements EventSubscriberInterface
     }
 
     /**
-     * @param \Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent $event
+     * On kernel exception event handler.
+     *
+     * @param GetResponseForExceptionEvent $event
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
@@ -72,7 +80,9 @@ abstract class AbstractListener implements EventSubscriberInterface
     }
 
     /**
-     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     * Get container.
+     *
+     * @return ContainerInterface
      */
     public function getContainer()
     {
@@ -80,7 +90,9 @@ abstract class AbstractListener implements EventSubscriberInterface
     }
 
     /**
-     * @return \Rollbar\Symfony\RollbarBundle\Payload\Generator
+     * Get generator.
+     *
+     * @return Generator
      */
     public function getGenerator()
     {

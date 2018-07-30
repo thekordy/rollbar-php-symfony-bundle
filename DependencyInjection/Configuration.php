@@ -2,59 +2,61 @@
 
 namespace Rollbar\Symfony\RollbarBundle\DependencyInjection;
 
+use Rollbar\Config;
+use Rollbar\Defaults;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Class Configuration
+ *
  * @link https://rollbar.com/docs/notifier/rollbar-php/#configuration-reference
+ *
  * @package Rollbar\Symfony\RollbarBundle\DependencyInjection
  */
 class Configuration implements ConfigurationInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
         $rollbarConfigNode = $treeBuilder->root(RollbarExtension::ALIAS);
+        $rollbarConfigNodeChildren = $rollbarConfigNode->children();
 
-        // the intendation in this method reflects the structure of the rootNode
-        // for convenience
-            
-        foreach (\Rollbar\Config::listOptions() as $option) {
-            // TODO: this is duplicated code from
-            // https://github.com/rollbar/rollbar-php-wordpress/blob/master/src/Plugin.php#L359-L366
-            // It needs to get replaced with a native rollbar/rollbar-php method
-            // as pointed out here https://github.com/rollbar/rollbar-php/issues/344
-            $method = lcfirst(str_replace('_', '', ucwords($option, '_')));
-                    
-            // Handle the "branch" exception
-            switch ($method) {
-                case "branch":
-                    $method = "gitBranch";
+        $configOptions = Config::listOptions();
+        $rollbarDefaults = Defaults::get();
+
+        foreach ($configOptions as $option) {
+            switch ($option) {
+                case 'branch':
+                    $method = 'gitBranch';
                     break;
-                case "includeErrorCodeContext":
-                    $method = 'includeCodeContext';
-                    break;
-                case "includeExceptionCodeContext":
-                    $method = 'includeExcCodeContext';
+                default:
+                    $method = $option;
                     break;
             }
-                    
-            $default = method_exists(\Rollbar\Defaults::get(), $method) ?
-                \Rollbar\Defaults::get()->$method() :
-                null;
-                    
-            $rollbarConfigNode
-                ->children()
-                ->scalarNode($option)
-                ->defaultValue($default)
-                ->end();
+
+            try {
+                $default = $rollbarDefaults->fromSnakeCase($method);
+            } catch (\Exception $e) {
+                $default = null;
+            }
+
+            if (is_array($default)) {
+                $rollbarConfigNodeChildren
+                    ->arrayNode($option)
+                        ->scalarPrototype()->end()
+                        ->defaultValue($default)
+                    ->end();
+            } else {
+                $rollbarConfigNodeChildren
+                    ->scalarNode($option)
+                        ->defaultValue($default)
+                    ->end();
+            }
         }
-        
-        $rollbarConfigNode->end();
 
         return $treeBuilder;
     }

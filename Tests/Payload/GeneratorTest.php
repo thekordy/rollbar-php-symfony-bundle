@@ -1,18 +1,25 @@
 <?php
+
 namespace Rollbar\Symfony\RollbarBundle\Tests\Payload;
 
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\HttpFoundation\Request;
 use Rollbar\Symfony\RollbarBundle\Payload\ErrorItem;
 use Rollbar\Symfony\RollbarBundle\Payload\Generator;
 use Rollbar\Symfony\RollbarBundle\Payload\TraceChain;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Class GeneratorTest
- * @package Rollbar\Symfony\RollbarBundle
+ *
+ * @package Rollbar\Symfony\RollbarBundle\Tests
  */
 class GeneratorTest extends KernelTestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();
@@ -20,26 +27,25 @@ class GeneratorTest extends KernelTestCase
         static::bootKernel();
     }
 
+    /**
+     * Test getContainer.
+     */
     public function testGetContainer()
     {
-        /**
-         * @var \Rollbar\Symfony\RollbarBundle\Payload\Generator $generator
-         */
-        $container = static::$kernel->getContainer();
-        $generator = $container->get('Rollbar\\Symfony\\RollbarBundle\\Payload\\Generator');
+        $container = $this->getContainer();
+        $generator = $this->getGenerator();
 
         $result = $generator->getContainer();
 
         $this->assertEquals($container, $result);
     }
 
+    /**
+     * Test getKernel.
+     */
     public function testGetKernel()
     {
-        /**
-         * @var \Rollbar\Symfony\RollbarBundle\Payload\Generator $generator
-         */
-        $container = static::$kernel->getContainer();
-        $generator = $container->get('Rollbar\\Symfony\\RollbarBundle\\Payload\\Generator');
+        $generator = $this->getGenerator();
 
         $kernel = $generator->getKernel();
 
@@ -47,8 +53,10 @@ class GeneratorTest extends KernelTestCase
     }
 
     /**
-     * @param $class
-     * @param $method
+     * Get class method.
+     *
+     * @param string $class
+     * @param string $method
      *
      * @return \ReflectionMethod
      */
@@ -61,14 +69,12 @@ class GeneratorTest extends KernelTestCase
         return $method;
     }
 
-
+    /**
+     * Test getServerInfo.
+     */
     public function testGetServerInfo()
     {
-        /**
-         * @var \Rollbar\Symfony\RollbarBundle\Payload\Generator $generator
-         */
-        $container = static::$kernel->getContainer();
-        $generator = $container->get('Rollbar\\Symfony\\RollbarBundle\\Payload\\Generator');
+        $generator = $this->getGenerator();
 
         $method = static::getClassMethod(Generator::class, 'getServerInfo');
         $data   = $method->invoke($generator);
@@ -84,17 +90,14 @@ class GeneratorTest extends KernelTestCase
         $this->assertEquals($data['user'], get_current_user());
     }
 
+    /**
+     * Test getRequestInfo.
+     */
     public function testGetRequestInfo()
     {
-        /**
-         * @var \Rollbar\Symfony\RollbarBundle\Payload\Generator $generator
-         */
-        $container = static::$kernel->getContainer();
-        $generator = $container->get('Rollbar\\Symfony\\RollbarBundle\\Payload\\Generator');
+        $container = $this->getContainer();
+        $generator = $this->getGenerator();
 
-        /**
-         * @var \Symfony\Component\HttpFoundation\Request $request
-         */
         $request = $container->get('request_stack')->getCurrentRequest();
         if (empty($request)) {
             $request = new Request();
@@ -118,13 +121,12 @@ class GeneratorTest extends KernelTestCase
         $this->assertEquals($data['user_ip'], $request->getClientIp());
     }
 
+    /**
+     * Test getErrorPayload.
+     */
     public function testGetErrorPayload()
     {
-        /**
-         * @var \Rollbar\Symfony\RollbarBundle\Payload\Generator $generator
-         */
-        $container = static::$kernel->getContainer();
-        $generator = $container->get('Rollbar\\Symfony\\RollbarBundle\\Payload\\Generator');
+        $generator = $this->getGenerator();
 
         $serverMethod = static::getClassMethod(Generator::class, 'getServerInfo');
         $serverInfo   = $serverMethod->invoke($generator);
@@ -154,18 +156,17 @@ class GeneratorTest extends KernelTestCase
         $this->assertEquals($body, $payload['body']);
         $this->assertEquals($requestInfo, $payload['request']);
         $this->assertEquals(static::$kernel->getEnvironment(), $payload['environment']);
-        $this->assertEquals(\Symfony\Component\HttpKernel\Kernel::VERSION, $payload['framework']);
+        $this->assertEquals(Kernel::VERSION, $payload['framework']);
         $this->assertEquals(phpversion(), $payload['language_version']);
         $this->assertEquals($serverInfo, $payload['server']);
     }
 
+    /**
+     * Test getExceptionPayload.
+     */
     public function testGetExceptionPayload()
     {
-        /**
-         * @var \Rollbar\Symfony\RollbarBundle\Payload\Generator $generator
-         */
-        $container = static::$kernel->getContainer();
-        $generator = $container->get('Rollbar\\Symfony\\RollbarBundle\\Payload\\Generator');
+        $generator = $this->getGenerator();
 
         $serverMethod = static::getClassMethod(Generator::class, 'getServerInfo');
         $serverInfo   = $serverMethod->invoke($generator);
@@ -194,22 +195,21 @@ class GeneratorTest extends KernelTestCase
         $this->assertEquals($body, $payload['body']);
         $this->assertEquals($requestInfo, $payload['request']);
         $this->assertEquals(static::$kernel->getEnvironment(), $payload['environment']);
-        $this->assertEquals(\Symfony\Component\HttpKernel\Kernel::VERSION, $payload['framework']);
+        $this->assertEquals(Kernel::VERSION, $payload['framework']);
         $this->assertEquals(phpversion(), $payload['language_version']);
         $this->assertEquals($serverInfo, $payload['server']);
     }
 
     /**
+     * Test strange exception.
+     *
      * @dataProvider generatorStrangeData
+     *
      * @param mixed $data
      */
     public function testStrangeException($data)
     {
-        /**
-         * @var \Rollbar\Symfony\RollbarBundle\Payload\Generator $generator
-         */
-        $container = static::$kernel->getContainer();
-        $generator = $container->get('Rollbar\\Symfony\\RollbarBundle\\Payload\\Generator');
+        $generator = $this->getGenerator();
 
         list($message, $payload) = $generator->getExceptionPayload($data);
 
@@ -218,6 +218,8 @@ class GeneratorTest extends KernelTestCase
     }
 
     /**
+     * Data provider for testStrangeException.
+     *
      * @return array
      */
     public function generatorStrangeData()
@@ -227,9 +229,29 @@ class GeneratorTest extends KernelTestCase
             [1234],
             [0.2345],
             [null],
-            [(object)['p' => 'a']],
+            [(object) ['p' => 'a']],
             [['s' => 'app', 'd' => 'web']],
             [new ErrorItem()],
         ];
+    }
+
+    /**
+     * Get container.
+     *
+     * @return ContainerInterface
+     */
+    private function getContainer()
+    {
+        return isset(static::$container) ? static::$container : static::$kernel->getContainer();
+    }
+
+    /**
+     * Get generator.
+     *
+     * @return Generator
+     */
+    private function getGenerator()
+    {
+        return $this->getContainer()->get('test.' . Generator::class);
     }
 }

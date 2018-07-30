@@ -1,22 +1,26 @@
 <?php
+
 namespace Rollbar\Symfony\RollbarBundle\Tests\Payload;
 
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Rollbar\Symfony\RollbarBundle\Payload\ErrorItem;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * Class ErrorItemTest
- * @package Rollbar\Symfony\RollbarBundle
+ *
+ * @package Rollbar\Symfony\RollbarBundle\Tests
  */
 class ErrorItemTest extends KernelTestCase
 {
     /**
+     * Test invoke.
+     *
      * @dataProvider generateInvoke
      *
-     * @param int $code
+     * @param int    $code
      * @param string $message
      * @param string $file
-     * @param int $line
+     * @param int    $line
      * @param string $mapped
      */
     public function testInvoke($code, $message, $file, $line, $mapped)
@@ -31,7 +35,7 @@ class ErrorItemTest extends KernelTestCase
         $this->assertEquals($mapped, $exception['class']);
         $this->assertContains($message, $exception['message']);
 
-        $this->assertEquals(1, count($data['frames']));
+        $this->assertCount(1, $data['frames']);
 
         $frame = $data['frames'][0];
         $this->assertEquals($file, $frame['filename']);
@@ -39,6 +43,8 @@ class ErrorItemTest extends KernelTestCase
     }
 
     /**
+     * Data provider for testInvoke.
+     *
      * @return array
      */
     public function generateInvoke()

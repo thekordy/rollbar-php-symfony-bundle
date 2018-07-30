@@ -2,20 +2,24 @@
 
 namespace Rollbar\Symfony\RollbarBundle\EventListener;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Rollbar\Symfony\RollbarBundle\DependencyInjection\RollbarExtension;
 use Psr\Log\LoggerInterface;
+use Rollbar\Symfony\RollbarBundle\DependencyInjection\RollbarExtension;
 use Rollbar\Symfony\RollbarBundle\Payload\Generator;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Class ErrorListener
+ *
+ * @package Rollbar\Symfony\RollbarBundle\EventListener
+ */
 class ErrorListener extends AbstractListener
 {
     /**
      * ErrorListener constructor.
      *
-     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Rollbar\Symfony\RollbarBundle\Payload\Generator $generator
+     * @param ContainerInterface $container
+     * @param LoggerInterface    $logger
+     * @param Generator          $generator
      */
     public function __construct(
         ContainerInterface $container,
@@ -73,9 +77,11 @@ class ErrorListener extends AbstractListener
 
     /**
      * Wrap php error_get_last() to get more testable code
+     *
      * @link: http://php.net/manual/en/function.error-get-last.php
      *
      * @return array|null
+     *
      * @codeCoverageIgnore
      */
     protected function getLastError()
@@ -86,13 +92,13 @@ class ErrorListener extends AbstractListener
     /**
      * Check do we need to report error or skip
      *
-     * @param $code
+     * @param mixed $code
      *
      * @return int
      */
     protected function isReportable($code)
     {
-        $code = (int)$code;
+        $code = (int) $code;
         $config = $this->getContainer()->getParameter(RollbarExtension::ALIAS . '.config');
 
         return true

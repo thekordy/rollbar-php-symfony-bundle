@@ -2,48 +2,49 @@
 
 namespace Rollbar\Symfony\RollbarBundle\Tests\DependencyInjection;
 
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Rollbar\Symfony\RollbarBundle\DependencyInjection\Configuration;
+use Rollbar\Config;
+use Rollbar\Defaults;
 use Rollbar\Symfony\RollbarBundle\DependencyInjection\RollbarExtension;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * Class ConfigurationTest
- * @package Rollbar\Symfony\Tests\DependencyInjection
+ *
+ * @package Rollbar\Symfony\RollbarBundle\Tests\DependencyInjection;
  */
 class ConfigurationTest extends KernelTestCase
 {
+    /**
+     * Test parameters.
+     */
     public function testParameters()
     {
         static::bootKernel();
-        $container = static::$kernel->getContainer();
+        $container = isset(static::$container) ? static::$container : static::$kernel->getContainer();
 
-        $config           = $container->getParameter(RollbarExtension::ALIAS . '.config');
-        
+        $config = $container->getParameter(RollbarExtension::ALIAS . '.config');
+
+        $configOptions = Config::listOptions();
+        $rollbarDefaults = Defaults::get();
+
         $defaults = [];
-        foreach (\Rollbar\Config::listOptions() as $option) {
-            // TODO: this is duplicated code from
-            // https://github.com/rollbar/rollbar-php-wordpress/blob/master/src/Plugin.php#L359-L366
-            // It needs to get replaced with a native rollbar/rollbar-php method
-            // as pointed out here https://github.com/rollbar/rollbar-php/issues/344
-            $method = lcfirst(str_replace('_', '', ucwords($option, '_')));
-                    
+        foreach ($configOptions as $option) {
             // Handle the "branch" exception
-            switch ($method) {
+            switch ($option) {
                 case "branch":
                     $method = "gitBranch";
                     break;
-                case "includeErrorCodeContext":
-                    $method = 'includeCodeContext';
-                    break;
-                case "includeExceptionCodeContext":
-                    $method = 'includeExcCodeContext';
+                default:
+                    $method = $option;
                     break;
             }
-                    
-            $default = method_exists(\Rollbar\Defaults::get(), $method) ?
-                \Rollbar\Defaults::get()->$method() :
-                null;
-                    
+
+            try {
+                $default = $rollbarDefaults->fromSnakeCase($method);
+            } catch (\Exception $e) {
+                $default = null;
+            }
+
             $defaults[$option] = $default;
         }
 

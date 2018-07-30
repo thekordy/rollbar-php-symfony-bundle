@@ -7,13 +7,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-use Rollbar\Rollbar;
-use Rollbar\Monolog\Handler\RollbarHandler;
-use Monolog\Logger;
-use Psr\Logger\LoggerInterface;
-
 /**
- * Class Extension
+ * Class RollbarExtension
+ *
  * @package Rollbar\Symfony\RollbarBundle\DependencyInjection
  */
 class RollbarExtension extends Extension
@@ -21,12 +17,7 @@ class RollbarExtension extends Extension
     const ALIAS = 'rollbar';
 
     /**
-     * Loads a specific configuration.
-     *
-     * @param array            $configs   An array of configuration values
-     * @param ContainerBuilder $container A ContainerBuilder instance
-     *
-     * @throws \InvalidArgumentException When provided tag is not defined in this extension
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -42,7 +33,7 @@ class RollbarExtension extends Extension
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getAlias()
     {

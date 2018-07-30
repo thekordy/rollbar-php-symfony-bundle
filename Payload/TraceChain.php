@@ -2,9 +2,16 @@
 
 namespace Rollbar\Symfony\RollbarBundle\Payload;
 
+/**
+ * Class TraceChain
+ *
+ * @package Rollbar\Symfony\RollbarBundle\Payload
+ */
 class TraceChain
 {
     /**
+     * Invoke.
+     *
      * @param \Exception $exception
      *
      * @return array
