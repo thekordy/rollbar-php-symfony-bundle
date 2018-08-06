@@ -149,8 +149,6 @@ class UserData
 
 If you run into any issues, please email us at [support@rollbar.com](mailto:support@rollbar.com)
 
-You can also find us on IRC: [#rollbar on chat.freenode.net](irc://chat.freenode.net/rollbar)
-
 For bug reports, please [open an issue on GitHub](https://github.com/rollbar/rollbar-php-symfony3-bundle/issues/new).
 
 ## Special thanks
