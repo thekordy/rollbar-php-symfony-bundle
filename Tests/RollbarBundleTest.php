@@ -1,18 +1,21 @@
 <?php
+
 namespace Rollbar\Symfony\RollbarBundle\Tests;
 
+use Rollbar\Symfony\RollbarBundle\EventListener\ErrorListener;
+use Rollbar\Symfony\RollbarBundle\EventListener\ExceptionListener;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
-use \Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Class RollbarBundleTest
- * @package Rollbar\Symfony\RollbarBundle
+ *
+ * @package Rollbar\Symfony\RollbarBundle\Tests
  */
 class RollbarBundleTest extends KernelTestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();
@@ -20,13 +23,12 @@ class RollbarBundleTest extends KernelTestCase
         static::bootKernel();
     }
 
+    /**
+     * Test listeners.
+     */
     public function testListeners()
     {
-        $container = static::$kernel->getContainer();
-
-        /**
-         * @var TraceableEventDispatcher $eventDispatcher
-         */
+        $container = isset(static::$container) ? static::$container : static::$kernel->getContainer();
         $eventDispatcher = $container->get('event_dispatcher');
         $listeners = $eventDispatcher->getListeners('kernel.exception');
         $listeners = array_merge(
@@ -34,14 +36,19 @@ class RollbarBundleTest extends KernelTestCase
             $eventDispatcher->getListeners('kernel.controller')
         );
 
-        $expected = [
-            \Rollbar\Symfony\RollbarBundle\EventListener\ErrorListener::class,
-            \Rollbar\Symfony\RollbarBundle\EventListener\ExceptionListener::class
+        $expectedListeners = [
+            ErrorListener::class,
+            ExceptionListener::class,
         ];
-        
+
         foreach ($listeners as $listener) {
-            $ok = $listener[0] instanceof $expected[0] || $listener[0] instanceof $expected[1];
-            $this->assertTrue($ok, 'Listeners were not registered');
+            foreach ($expectedListeners as $key => $expectedListener) {
+                if ($listener[0] instanceof $expectedListener) {
+                    unset($expectedListeners[$key]);
+                }
+            }
         }
+
+        $this->assertEmpty($expectedListeners, 'Listeners were not registered');
     }
 }

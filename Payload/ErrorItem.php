@@ -2,6 +2,11 @@
 
 namespace Rollbar\Symfony\RollbarBundle\Payload;
 
+/**
+ * Class ErrorItem
+ *
+ * @package Rollbar\Symfony\RollbarBundle\Payload
+ */
 class ErrorItem
 {
     /**
@@ -29,6 +34,8 @@ class ErrorItem
     ];
 
     /**
+     * Invoke.
+     *
      * @param int    $code
      * @param string $message
      * @param string $file
@@ -62,17 +69,16 @@ class ErrorItem
         return $record;
     }
 
-
     /**
      * Map error code to human format
      *
-     * @param null $code
+     * @param mixed $code
      *
-     * @return mixed|string
+     * @return string
      */
     protected function mapError($code)
     {
-        $code = (int)$code;
+        $code = (int) $code;
 
         return !empty(static::$map[$code]) ? static::$map[$code] : 'E_UNDEFINED';
     }

@@ -19,6 +19,31 @@ See [real companies improving their development workflow thanks to Rollbar](http
 This bundle depends on [symfony/monolog-bundle](https://github.com/symfony/monolog-bundle).
 
 ## Installation
+
+### Symfony 4
+1. Add `Rollbar for Symfony` with composer: `composer require rollbar/rollbar-php-symfony3-bundle`
+2. Register `Rollbar\Symfony\RollbarBundle\RollbarBundle` in `config/bundles.php` by adding the following entry at the end of your bundle array:
+```php
+<?php
+  Rollbar\Symfony\RollbarBundle\RollbarBundle::class => ['all' => true]
+?>
+```
+3. Add RollbarHandler for appropriate environments in `config/packages/dev/monolog.yaml`, `config/packages/test/monolog.yaml` and `config/packages/prod/monolog.yaml` by adding the following in the `handlers` section:
+```yaml
+          rollbar:
+            type: service
+            id: Rollbar\Monolog\Handler\RollbarHandler
+```
+4. Configure your Rollbar setup in `config/rollbar.yaml` or in any of the environment subdirectories (i.e. `config/prod/rollbar.yaml`:
+```yaml
+rollbar:
+    enabled: true
+    access_token: [your access token]
+    environment: [environment name]
+    [other Rollbar config options]
+```
+
+### Symfony 3
 1. Add `Rollbar for Symfony` with composer: `composer require rollbar/rollbar-php-symfony3-bundle`
 2. Register `Rollbar\Symfony\RollbarBundle\RollbarBundle` in `AppKernel::registerBundles()` **after** registering the `MonologBundle` (`new Symfony\Bundle\MonologBundle\MonologBundle()`).
 
@@ -41,7 +66,7 @@ This bundle depends on [symfony/monolog-bundle](https://github.com/symfony/monol
     
 ```
 
-3. Configure Rollbar and Monolog in your `app/config.yml` or `app/config_*.yml`.
+3. Configure Rollbar and Monolog in your `app/config/config.yml` or `app/config/config_*.yml`.
 
 ```yaml
 

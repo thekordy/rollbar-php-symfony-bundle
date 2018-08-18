@@ -2,18 +2,25 @@
 
 namespace Rollbar\Symfony\RollbarBundle\Payload;
 
+/**
+ * Class TraceItem
+ *
+ * @package Rollbar\Symfony\RollbarBundle\Payload
+ */
 class TraceItem
 {
     /**
-     * @param \Exception $exception
+     * Invoke.
+     *
+     * @param $throwable
      *
      * @return array
      */
-    public function __invoke(\Exception $exception)
+    public function __invoke($throwable)
     {
         $frames = [];
 
-        foreach ($exception->getTrace() as $row) {
+        foreach ($throwable->getTrace() as $row) {
             // prepare initial frame
             $frame = [
                 'filename'   => empty($row['file']) ? null : $row['file'],
@@ -37,17 +44,17 @@ class TraceItem
 
         $record = [
             'exception' => [
-                'class'   => get_class($exception),
+                'class'   => get_class($throwable),
                 'message' => implode(' ', [
-                    "'\\" . get_class($exception) . "'",
+                    "'\\" . get_class($throwable) . "'",
                     'with message',
-                    "'" . $exception->getMessage() . "'",
+                    "'" . $throwable->getMessage() . "'",
                     'occurred in file',
-                    "'" . $exception->getFile() . "'",
+                    "'" . $throwable->getFile() . "'",
                     'line',
-                    "'" . $exception->getLine() . "'",
+                    "'" . $throwable->getLine() . "'",
                     'with code',
-                    "'" . $exception->getCode() . "'",
+                    "'" . $throwable->getCode() . "'",
                 ]),
             ],
             'frames'    => $frames,

@@ -2,17 +2,19 @@
 
 namespace Rollbar\Symfony\RollbarBundle\EventListener;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Psr\Log\LoggerInterface;
-use Rollbar\Symfony\RollbarBundle\Payload\Generator;
 
+/**
+ * Class ExceptionListener
+ *
+ * @package Rollbar\Symfony\RollbarBundle\EventListener
+ */
 class ExceptionListener extends AbstractListener
 {
     /**
      * Process exception
      *
-     * @param \Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent $event
+     * @param GetResponseForExceptionEvent $event
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
@@ -28,15 +30,16 @@ class ExceptionListener extends AbstractListener
     /**
      * Handle provided exception
      *
-     * @param $exception
+     * @param mixed $exception
      */
     public function handleException($exception)
     {
         // generate payload and log data
         list($message, $payload) = $this->getGenerator()->getExceptionPayload($exception);
-        
+
         $this->getLogger()->error($message, [
             'payload' => $payload,
+            'exception' => $exception,
         ]);
     }
 }
