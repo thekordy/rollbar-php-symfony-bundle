@@ -66,7 +66,7 @@ rollbar:
     
 ```
 
-3. Configure Rollbar and Monolog in your `app/config.yml` or `app/config_*.yml`.
+3. Configure Rollbar and Monolog in your `app/config/config.yml` or `app/config/config_*.yml`.
 
 ```yaml
 
