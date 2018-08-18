@@ -12,18 +12,18 @@ class TraceChain
     /**
      * Invoke.
      *
-     * @param \Exception $exception
+     * @param $throwable
      *
      * @return array
      */
-    public function __invoke(\Exception $exception)
+    public function __invoke($throwable)
     {
         $chain = [];
         $item  = new TraceItem();
 
-        while (!empty($exception)) {
-            $chain[] = $item($exception);
-            $exception = $exception->getPrevious();
+        while (!empty($throwable)) {
+            $chain[] = $item($throwable);
+            $throwable = $throwable->getPrevious();
         }
 
         return $chain;
