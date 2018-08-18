@@ -1,194 +1,60 @@
-# Rollbar for Symfony 3
+# Rollbar for Symfony
 [![codecov](https://codecov.io/gh/rollbar/rollbar-php-symfony3-bundle/branch/master/graph/badge.svg)](https://codecov.io/gh/rollbar/rollbar-php-symfony3-bundle)
 [![Build Status](https://travis-ci.org/rollbar/rollbar-php-symfony3-bundle.svg?branch=master)](https://travis-ci.org/rollbar/rollbar-php-symfony3-bundle)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
-Rollbar full-stack error tracking for Symfony 3
+Rollbar full-stack error tracking for Symfony.
 
-## Description
-Rollbar collects errors that happen in your application, notifies you, and analyzes them so you can debug and fix them.
+Supported Symfony versions: 3+, 4+.
 
-This plugin integrates Rollbar into your Symfony 3 installation.
+## Setup Instructions
+1. [Sign up for a Rollbar account](https://rollbar.com/signup)
+2. Follow the [Installation](https://docs.rollbar.com/v1.0.0/docs/symfony#section-installation) instructions in our [Symfony SDK docs](https://docs.rollbar.com/docs/symfony) to install `rollbar-php-symfony3-bundle` and configure it for your platform.
 
-Find out [how Rollbar can help you decrease development and maintenance costs](https://rollbar.com/features/).
+# Usage and Reference
 
-See [real companies improving their development workflow thanks to Rollbar](https://rollbar.com/customers/).
+For complete usage instructions, see our [Symfony SDK docs](https://docs.rollbar.com/docs/symfony).
 
-## Requirements
+For complete configuration reference, see our [PHP SDK docs](https://docs.rollbar.com/v1.0.0/docs/php#section-configuration-reference)
 
-This bundle depends on [symfony/monolog-bundle](https://github.com/symfony/monolog-bundle).
+# Release History & Changelog
 
-## Installation
+See our [Releases](https://github.com/rollbar/rollbar-php-symfony3-bundle/releases) page for a list of all releases, including changes.
 
-### Symfony 4
-1. Add `Rollbar for Symfony` with composer: `composer require rollbar/rollbar-php-symfony3-bundle`
-2. Register `Rollbar\Symfony\RollbarBundle\RollbarBundle` in `config/bundles.php` by adding the following entry at the end of your bundle array:
-```php
-<?php
-  Rollbar\Symfony\RollbarBundle\RollbarBundle::class => ['all' => true]
-?>
-```
-3. Add RollbarHandler for appropriate environments in `config/packages/dev/monolog.yaml`, `config/packages/test/monolog.yaml` and `config/packages/prod/monolog.yaml` by adding the following in the `handlers` section:
-```yaml
-          rollbar:
-            type: service
-            id: Rollbar\Monolog\Handler\RollbarHandler
-```
-4. Configure your Rollbar setup in `config/rollbar.yaml` or in any of the environment subdirectories (i.e. `config/prod/rollbar.yaml`:
-```yaml
-rollbar:
-    enabled: true
-    access_token: [your access token]
-    environment: [environment name]
-    [other Rollbar config options]
-```
+# Related projects
 
-### Symfony 3
-1. Add `Rollbar for Symfony` with composer: `composer require rollbar/rollbar-php-symfony3-bundle`
-2. Register `Rollbar\Symfony\RollbarBundle\RollbarBundle` in `AppKernel::registerBundles()` **after** registering the `MonologBundle` (`new Symfony\Bundle\MonologBundle\MonologBundle()`).
+A range of examples of using Rollbar PHP is available here: [Rollbar PHP Examples](https://github.com/rollbar/rollbar-php-examples).
 
-```php
+A Wordpress Plugin is available through Wordpress Admin Panel or through Wordpress Plugin directory: [Rollbar Wordpress](https://wordpress.org/plugins/rollbar/)
 
-    public function registerBundles()
-    {
-        $bundles = [
-            // ...
-            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            // ...
-            new Symfony\Bundle\MonologBundle\MonologBundle(),
-            // ...
-            new Rollbar\Symfony\RollbarBundle\RollbarBundle(),
-            // ...
-        ];
+A Laravel-specific package is available for integrating with Laravel: [Rollbar Laravel](https://github.com/rollbar/rollbar-php-laravel)
 
-        return $bundles;
-    }
-    
-```
+A CakePHP-specific package is avaliable for integrating with CakePHP 2.x:
+[CakeRollbar](https://github.com/tranfuga25s/CakeRollbar)
 
-3. Configure Rollbar and Monolog in your `app/config/config.yml` or `app/config/config_*.yml`.
+A Flow-specific package is available for integrating with Neos Flow: [m12/flow-rollbar](https://packagist.org/packages/m12/flow-rollbar)
 
-```yaml
+Yii package: [baibaratsky/yii-rollbar](https://github.com/baibaratsky/yii-rollbar)
 
-rollbar:
-  access_token: YourAccessToken
-  environment: YourEnvironmentName
-    
-monolog:
-  handlers:
-    rollbar:
-      type: service
-      id: Rollbar\Monolog\Handler\RollbarHandler
-    
-```
+Yii2 package: [baibaratsky/yii2-rollbar](https://github.com/baibaratsky/yii2-rollbar)
 
-## Usage
-
-### Exception reporting
-
-Symfony 3 exceptions will be reported to Rollbar automatically after you install and configure the bundle.
-
-### Manual reporting
-
-This bundle injects itself into the Monolog loggers. Thanks to this, all of the Monolog logs will be automatically passed to Rollbar as well.
-
-All you need to do is obtain the `LoggerInterface` implementation from the service container.
-
-```php
-
-  namespace AppBundle\Controller;
-  
-  use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-  use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-  use Symfony\Component\HttpFoundation\Request;
-  use Psr\Log\LoggerInterface;
-  
-  class DefaultController extends Controller
-  {
-      /**
-       * @Route("/", name="homepage")
-       */
-      public function indexAction(Request $request, LoggerInterface $logger)
-      {
-          $logger->error('Test info with person data');
-          
-          // replace this example code with whatever you need
-          return $this->render('default/index.html.twig', [
-              'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-          ]);
-      }
-  }
-
-```
-
-## Configuration
-
-You can see all of the Rollbar configuration options [here](https://github.com/rollbar/rollbar-php#configuration-reference).
-
-All of them can be configured by nesting them in the `rollbar` array, i.e.:
-
-```yaml
-
-rollbar:
-  access_token: YourAccessToken
-  environment: YourEnvironmentName
-  scrub_fields: [password, password_confirmation, credit_card_number]
-    
-```
-
-### `person` configuration option
-
-By default, this bundle fetches the user data with `$container->get('security.token_storage')->getToken()->getUser()`. However, you can hardcode your own person data here. Although this might be used rarely, if you want to pass user data to Rollbar, you probably want to set up `person_fn` (see below).
-
-### `person_fn` configuration option
-
-*Note:* data returned by the `person_fn` callable will overwrite any data provided in `person` config or fetched from Symfony's `$container->get('security.token_storage')->getToken()->getUser()`.
-
-You can provide your own logic for retrieving user data with the `person_fn` configuration option. The value should be a PHP callable returning an array of data in the `person` format, i.e.:
-
-```yaml
-
-rollbar:
-  access_token: YourAccessToken
-  environment: YourEnvironmentName
-  person_fn: '\Example\UserData::personFn'
-        
-```
-
-```php
-namespace Example;
-
-class UserData
-{
-  
-  public static function personFn()
-  {
-    return array(
-      'id' => '444'
-    );
-  }
-}
-```
-
-## Help / Support
+# Help / Support
 
 If you run into any issues, please email us at [support@rollbar.com](mailto:support@rollbar.com)
 
 For bug reports, please [open an issue on GitHub](https://github.com/rollbar/rollbar-php-symfony3-bundle/issues/new).
+The best, configure your Rollbar with `verbosity` at level `\Psr\Log\LogLevel::DEBUG` and attach
+the contents of your `sys_get_temp_dir() . '/rollbar.debug.log'` (usually `/tmp/rollbar.debug.log`).
 
-## Special thanks
+# Contributing
 
-The original author of this package is [@OxCom](https://www.oxcom.me). This is a fork and continuation of efforts.
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Added some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
 
-## Testing
-
-You can set up a Rollbar Access Token for testing in `phpunit.xml`.
+# Testing
 Tests are in `tests`.
 To run the tests: `composer test`
 To fix code style issues: `composer fix`
-
-## Disclaimer
-
-This plugin is a community-driven contribution.
-
-[![Rollbar](https://d26gfdfi90p7cf.cloudfront.net/rollbar-badge.144534.o.png)](https://rollbar.com/)
