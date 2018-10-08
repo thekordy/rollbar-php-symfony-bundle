@@ -9,7 +9,7 @@ Supported Symfony versions: 3+, 4+.
 
 ## Setup Instructions
 1. [Sign up for a Rollbar account](https://rollbar.com/signup)
-2. Follow the [Installation](https://docs.rollbar.com/v1.0.0/docs/symfony#section-installation) instructions in our [Symfony SDK docs](https://docs.rollbar.com/docs/symfony) to install `rollbar-php-symfony3-bundle` and configure it for your platform.
+2. Follow the [Installation](https://docs.rollbar.com/v1.0.0/docs/symfony#section-installation) instructions in our [Symfony SDK docs](https://docs.rollbar.com/docs/symfony) to install `rollbar-php-symfony-bundle` and configure it for your platform.
 
 # Usage and Reference
 
