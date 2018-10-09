@@ -1,19 +1,4 @@
 services:
-  Rollbar\Symfony\RollbarBundle\EventListener\ExceptionListener:
-    arguments:
-      - '@service_container'
-      - '@logger'
-      - '@Rollbar\Symfony\RollbarBundle\Payload\Generator'
-    tags:
-      - { name: kernel.event_listener, event: kernel.exception, priority: -100 }
-      
-  Rollbar\Symfony\RollbarBundle\EventListener\ErrorListener:
-    arguments:
-      - '@service_container'
-      - '@logger'
-      - '@Rollbar\Symfony\RollbarBundle\Payload\Generator'
-    tags:
-      - { name: kernel.event_listener, event: kernel.exception }
 
   Rollbar\Symfony\RollbarBundle\Factories\RollbarHandlerFactory:
     arguments:
