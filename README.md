@@ -1,6 +1,6 @@
 # Rollbar for Symfony
-[![codecov](https://codecov.io/gh/rollbar/rollbar-php-symfony3-bundle/branch/master/graph/badge.svg)](https://codecov.io/gh/rollbar/rollbar-php-symfony3-bundle)
-[![Build Status](https://travis-ci.org/rollbar/rollbar-php-symfony3-bundle.svg?branch=master)](https://travis-ci.org/rollbar/rollbar-php-symfony3-bundle)
+[![codecov](https://codecov.io/gh/rollbar/rollbar-php-symfony3-bundle/branch/master/graph/badge.svg)](https://codecov.io/gh/rollbar/rollbar-php-symfony-bundle)
+[![Build Status](https://travis-ci.org/rollbar/rollbar-php-symfony-bundle.svg?branch=master)](https://travis-ci.org/rollbar/rollbar-php-symfony-bundle)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 Rollbar full-stack error tracking for Symfony.
