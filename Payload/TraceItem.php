@@ -26,7 +26,7 @@ class TraceItem
                 'filename'   => empty($row['file']) ? null : $row['file'],
                 'lineno'     => empty($row['line']) ? null : $row['line'],
                 'class_name' => empty($row['class']) ? null : $row['class'],
-                'args'       => empty($row['args']) ? [] : $row['args'],
+                'args'       => empty($row['args']) ? [] : unserialize(serialize($row['args'])),
             ];
 
             // convert vars to types
