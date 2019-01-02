@@ -28,18 +28,30 @@ class RollbarHandlerFactory
             $config['access_token'] = $_ENV['ROLLBAR_TEST_TOKEN'];
         }
 
-        if (empty($config['person'])) {
-            try {
-                if ($token = $container->get('security.token_storage')->getToken()) {
-                    $config['person'] = $token->getUser();
-                }
-            } catch (\Exception $exception) {
-                // Ignore
-            }
-        }
-
         if (!empty($config['person_fn']) && is_callable($config['person_fn'])) {
             $config['person'] = null;
+        } else {
+            
+            if (empty($config['person'])) {
+                
+                $config['person_fn'] = function() use ($container) {
+                    
+                    try {
+                        $token = $container->get('security.token_storage')->getToken();
+                        
+                        if ($token) {
+                            $user = $token->getUser();
+                            $serializer = $container->get('serializer');
+                            $person = \json_decode($serializer->serialize($user, 'json'), true);
+                            return $person;
+                        }
+                    } catch (\Exception $exception) {
+                        // Ignore
+                    }
+                };
+                
+            }
+            
         }
 
         Rollbar::init($config, false, false, false);
