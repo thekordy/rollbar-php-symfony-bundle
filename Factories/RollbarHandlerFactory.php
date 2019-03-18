@@ -18,7 +18,7 @@ class RollbarHandlerFactory
     /**
      * @var string|null
      */
-    private $minimumLevel;
+    private $monologMinimumLevel;
 
     /**
      * RollbarHandlerFactory constructor.
@@ -53,7 +53,9 @@ class RollbarHandlerFactory
             };
         }
 
-        $this->minimumLevel = $config['minimum_level'] ?: LogLevel::ERROR;
+        $this->monologMinimumLevel = isset($config['monolog_minimum_level'])
+            ? $config['monolog_minimum_level']
+            : LogLevel::ERROR;
 
         Rollbar::init($config, false, false, false);
     }
@@ -65,6 +67,6 @@ class RollbarHandlerFactory
      */
     public function createRollbarHandler()
     {
-        return new RollbarHandler(Rollbar::logger(), $this->minimumLevel);
+        return new RollbarHandler(Rollbar::logger(), $this->monologMinimumLevel);
     }
 }
