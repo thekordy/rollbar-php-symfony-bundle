@@ -53,7 +53,7 @@ class RollbarHandlerFactory
             };
         }
 
-        $this->minimumLevel = $config['minimum_level'] ?: LogLevel::ERROR;
+        $this->minimumLevel = isset($config['minimum_level']) ? $config['minimum_level'] : LogLevel::ERROR;
 
         Rollbar::init($config, false, false, false);
     }
