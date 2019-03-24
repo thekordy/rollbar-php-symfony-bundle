@@ -32,6 +32,7 @@ matrix:
 before_install:
   - composer self-update
   - composer require -n --prefer-dist "symfony/symfony:${SYMFONY_VERSION}"
+  - composer require -n --prefer-source "rollbar/rollbar:dev-master"
 
 script:
   - php -v
