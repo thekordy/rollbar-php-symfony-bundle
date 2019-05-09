@@ -31,14 +31,11 @@ class RollbarHandlerFactory
         if (!empty($config['person_fn']) && is_callable($config['person_fn'])) {
             $config['person'] = null;
         } else {
-            
             if (empty($config['person'])) {
-                
-                $config['person_fn'] = function() use ($container) {
-                    
+                $config['person_fn'] = function () use ($container) {
                     try {
                         $token = $container->get('security.token_storage')->getToken();
-                        
+
                         if ($token) {
                             $user = $token->getUser();
                             $serializer = $container->get('serializer');
@@ -49,9 +46,7 @@ class RollbarHandlerFactory
                         // Ignore
                     }
                 };
-                
             }
-            
         }
 
         Rollbar::init($config, false, false, false);
