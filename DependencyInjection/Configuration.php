@@ -21,8 +21,14 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rollbarConfigNode = $treeBuilder->root(RollbarExtension::ALIAS);
+        $treeBuilder = new TreeBuilder(RollbarExtension::ALIAS);
+
+        if (method_exists($treeBuilder, 'getRootNode')) {
+            $rollbarConfigNode = $treeBuilder->getRootNode();
+        } else {
+            $rollbarConfigNode = $treeBuilder->root(RollbarExtension::ALIAS);
+        }
+
         $rollbarConfigNodeChildren = $rollbarConfigNode->children();
 
         $configOptions = Config::listOptions();
