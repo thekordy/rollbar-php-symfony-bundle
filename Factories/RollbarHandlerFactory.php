@@ -33,10 +33,10 @@ class RollbarHandlerFactory
         } else {
             if (empty($config['person'])) {
                 $config['person_fn'] = function () use ($container) {
-                    
+
                     try {
                         $token = $container->get('security.token_storage')->getToken();
-                        
+
                         if ($token) {
                             $user = $token->getUser();
                             $serializer = $container->get('serializer');
