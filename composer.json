@@ -30,8 +30,8 @@
         "php": ">=7.1",
         "rollbar/rollbar": "^2",
         "symfony/dependency-injection": "^5.0",
-        "symfony/config": "^^5.0",
-        "symfony/http-kernel": "^^5.0",
+        "symfony/config": "^5.0",
+        "symfony/http-kernel": "^5.0",
         "symfony/monolog-bundle": "*",
         "symfony/serializer": "*",
         "ext-json": "*"
