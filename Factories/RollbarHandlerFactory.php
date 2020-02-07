@@ -30,23 +30,20 @@ class RollbarHandlerFactory
 
         if (!empty($config['person_fn']) && is_callable($config['person_fn'])) {
             $config['person'] = null;
-        } else {
-            if (empty($config['person'])) {
-                $config['person_fn'] = function () use ($container) {
-                    try {
-                        $token = $container->get('security.token_storage')->getToken();
+        } elseif (empty($config['person'])) {
+            $config['person_fn'] = static function () use ($container) {
+                try {
+                    $token = $container->get('security.token_storage')->getToken();
 
-                        if ($token) {
-                            $user = $token->getUser();
-                            $serializer = $container->get('serializer');
-                            $person = \json_decode($serializer->serialize($user, 'json'), true);
-                            return $person;
-                        }
-                    } catch (\Exception $exception) {
-                        // Ignore
+                    if ($token) {
+                        $user = $token->getUser();
+                        $serializer = $container->get('serializer');
+                        return \json_decode($serializer->serialize($user, 'json'), true);
                     }
-                };
-            }
+                } catch (\Exception $exception) {
+                    // Ignore
+                }
+            };
         }
 
         Rollbar::init($config, false, false, false);
@@ -57,7 +54,7 @@ class RollbarHandlerFactory
      *
      * @return RollbarHandler
      */
-    public function createRollbarHandler()
+    public function createRollbarHandler(): RollbarHandler
     {
         return new RollbarHandler(Rollbar::logger(), LogLevel::ERROR);
     }

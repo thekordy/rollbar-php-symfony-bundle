@@ -42,7 +42,7 @@ class TraceItem
             $frames[] = $frame;
         }
 
-        $record = [
+        return [
             'exception' => [
                 'class'   => get_class($throwable),
                 'message' => implode(' ', [
@@ -59,7 +59,5 @@ class TraceItem
             ],
             'frames'    => $frames,
         ];
-
-        return $record;
     }
 }

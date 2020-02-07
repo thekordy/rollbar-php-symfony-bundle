@@ -15,7 +15,7 @@ class TraceItemTest extends KernelTestCase
     /**
      * Test invoke.
      */
-    public function testInvoke()
+    public function testInvoke(): void
     {
         $msg = 'Text exception - ' . md5(microtime());
         $ex  = new \Exception($msg, 7);

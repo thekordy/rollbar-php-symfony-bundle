@@ -19,7 +19,7 @@ class RollbarExtensionTest extends AbstractExtensionTestCase
      *
      * @return array
      */
-    protected function getContainerExtensions()
+    protected function getContainerExtensions(): array
     {
         return [
             new RollbarExtension(),
@@ -34,7 +34,7 @@ class RollbarExtensionTest extends AbstractExtensionTestCase
      * @param string $var
      * @param array  $expected
      */
-    public function testConfigEnabledVars($var, $expected)
+    public function testConfigEnabledVars(string $var, array $expected): void
     {
         $this->load();
 
@@ -50,7 +50,7 @@ class RollbarExtensionTest extends AbstractExtensionTestCase
      *
      * @return array
      */
-    public function generatorConfigVars()
+    public function generatorConfigVars(): array
     {
         return [
             ['rollbar.config', ['enabled' => true]],
@@ -67,7 +67,7 @@ class RollbarExtensionTest extends AbstractExtensionTestCase
      * @param string $var
      * @param array  $expected
      */
-    public function testConfigDisabledVars($var, $expected)
+    public function testConfigDisabledVars(string $var, array $expected): void
     {
         $this->load(['enabled' => false]);
 
@@ -81,7 +81,7 @@ class RollbarExtensionTest extends AbstractExtensionTestCase
     /**
      * Test alias.
      */
-    public function testAlias()
+    public function testAlias(): void
     {
         $extension = new RollbarExtension();
         $this->assertEquals(RollbarExtension::ALIAS, $extension->getAlias());

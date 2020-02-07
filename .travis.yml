@@ -1,15 +1,15 @@
 language: php
 
 php:
-  - 5.6
-  - 7.0
   - 7.1
   - 7.2
+  - 7.3
 
 env:
   - SYMFONY_VERSION=3.4.*
   - SYMFONY_VERSION=4.0.*
   - SYMFONY_VERSION=4.1.*
+  - SYMFONY_VERSION=5.0.*
 
 sudo: false
 dist: trusty
@@ -20,14 +20,16 @@ cache:
 
 matrix:
   exclude:
-    - php: 5.6
+    - php: 7.1
       env: SYMFONY_VERSION=4.0.*
-    - php: 5.6
+    - php: 7.1
       env: SYMFONY_VERSION=4.1.*
-    - php: 7.0
-      env: SYMFONY_VERSION=4.0.*
-    - php: 7.0
-      env: SYMFONY_VERSION=4.1.*
+    - php: 7.1
+      env: SYMFONY_VERSION=5.0.*
+    - php: 7.2
+      env: SYMFONY_VERSION=5.0.*
+    - php: 7.3
+      env: SYMFONY_VERSION=5.0.*
 
 before_install:
   - composer self-update
