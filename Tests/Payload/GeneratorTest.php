@@ -20,7 +20,7 @@ class GeneratorTest extends KernelTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -30,7 +30,7 @@ class GeneratorTest extends KernelTestCase
     /**
      * Test getContainer.
      */
-    public function testGetContainer()
+    public function testGetContainer(): void
     {
         $container = $this->getContainer();
         $generator = $this->getGenerator();
@@ -43,7 +43,7 @@ class GeneratorTest extends KernelTestCase
     /**
      * Test getKernel.
      */
-    public function testGetKernel()
+    public function testGetKernel(): void
     {
         $generator = $this->getGenerator();
 
@@ -59,8 +59,9 @@ class GeneratorTest extends KernelTestCase
      * @param string $method
      *
      * @return \ReflectionMethod
+     * @throws \ReflectionException
      */
-    protected static function getClassMethod($class, $method)
+    protected static function getClassMethod(string $class, string $method): \ReflectionMethod
     {
         $class  = new \ReflectionClass($class);
         $method = $class->getMethod($method);
@@ -72,7 +73,7 @@ class GeneratorTest extends KernelTestCase
     /**
      * Test getServerInfo.
      */
-    public function testGetServerInfo()
+    public function testGetServerInfo(): void
     {
         $generator = $this->getGenerator();
 
@@ -92,8 +93,9 @@ class GeneratorTest extends KernelTestCase
 
     /**
      * Test getRequestInfo.
+     * @throws \ReflectionException
      */
-    public function testGetRequestInfo()
+    public function testGetRequestInfo(): void
     {
         $container = $this->getContainer();
         $generator = $this->getGenerator();
@@ -123,8 +125,9 @@ class GeneratorTest extends KernelTestCase
 
     /**
      * Test getErrorPayload.
+     * @throws \Exception
      */
-    public function testGetErrorPayload()
+    public function testGetErrorPayload(): void
     {
         $generator = $this->getGenerator();
 
@@ -138,9 +141,9 @@ class GeneratorTest extends KernelTestCase
         $code = E_ERROR;
         $msg  = 'testGetErrorPayload';
         $file = __FILE__;
-        $line = rand(1, 10);
+        $line = random_int(1, 10);
 
-        list($message, $payload) = $generator->getErrorPayload($code, $msg, $file, $line);
+        [$message, $payload] = $generator->getErrorPayload($code, $msg, $file, $line);
 
         $this->assertEquals($msg, $message);
 
@@ -157,14 +160,15 @@ class GeneratorTest extends KernelTestCase
         $this->assertEquals($requestInfo, $payload['request']);
         $this->assertEquals(static::$kernel->getEnvironment(), $payload['environment']);
         $this->assertEquals(Kernel::VERSION, $payload['framework']);
-        $this->assertEquals(phpversion(), $payload['language_version']);
+        $this->assertEquals(PHP_VERSION, $payload['language_version']);
         $this->assertEquals($serverInfo, $payload['server']);
     }
 
     /**
      * Test getExceptionPayload.
+     * @throws \ReflectionException
      */
-    public function testGetExceptionPayload()
+    public function testGetExceptionPayload(): void
     {
         $generator = $this->getGenerator();
 
@@ -207,11 +211,11 @@ class GeneratorTest extends KernelTestCase
      *
      * @param mixed $data
      */
-    public function testStrangeException($data)
+    public function testStrangeException($data): void
     {
         $generator = $this->getGenerator();
 
-        list($message, $payload) = $generator->getExceptionPayload($data);
+        [$message, $payload] = $generator->getExceptionPayload($data);
 
         $this->assertEquals('Undefined error', $message);
         $this->assertNotEmpty($payload['body']['trace']);
@@ -222,7 +226,7 @@ class GeneratorTest extends KernelTestCase
      *
      * @return array
      */
-    public function generatorStrangeData()
+    public function generatorStrangeData(): array
     {
         return [
             ['zxcv'],
@@ -240,15 +244,15 @@ class GeneratorTest extends KernelTestCase
      *
      * @return ContainerInterface
      */
-    private function getContainer()
+    private function getContainer(): ContainerInterface
     {
-        return isset(static::$container) ? static::$container : static::$kernel->getContainer();
+        return static::$container ?? static::$kernel->getContainer();
     }
 
     /**
      * Get generator.
      *
-     * @return Generator
+     * @return object
      */
     private function getGenerator()
     {

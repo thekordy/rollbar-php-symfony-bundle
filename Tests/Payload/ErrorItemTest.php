@@ -23,7 +23,7 @@ class ErrorItemTest extends KernelTestCase
      * @param int    $line
      * @param string $mapped
      */
-    public function testInvoke($code, $message, $file, $line, $mapped)
+    public function testInvoke(int $code, string $message, string $file, int $line, string $mapped): void
     {
         $item = new ErrorItem();
         $data = $item($code, $message, $file, $line);
@@ -46,15 +46,16 @@ class ErrorItemTest extends KernelTestCase
      * Data provider for testInvoke.
      *
      * @return array
+     * @throws \Exception
      */
-    public function generateInvoke()
+    public function generateInvoke(): array
     {
         return [
-            [E_ERROR, 'Error message - ' . microtime(true), __FILE__, rand(1, 100), 'E_ERROR'],
-            [E_WARNING, 'Error message - ' . microtime(true), __FILE__, rand(1, 100), 'E_WARNING'],
-            [E_PARSE, 'Error message - ' . microtime(true), __FILE__, rand(1, 100), 'E_PARSE'],
-            [E_NOTICE, 'Error message - ' . microtime(true), __FILE__, rand(1, 100), 'E_NOTICE'],
-            [E_CORE_ERROR, 'Error message - ' . microtime(true), __FILE__, rand(1, 100), 'E_CORE_ERROR'],
+            [E_ERROR, 'Error message - ' . microtime(true), __FILE__, random_int(1, 100), 'E_ERROR'],
+            [E_WARNING, 'Error message - ' . microtime(true), __FILE__, random_int(1, 100), 'E_WARNING'],
+            [E_PARSE, 'Error message - ' . microtime(true), __FILE__, random_int(1, 100), 'E_PARSE'],
+            [E_NOTICE, 'Error message - ' . microtime(true), __FILE__, random_int(1, 100), 'E_NOTICE'],
+            [E_CORE_ERROR, 'Error message - ' . microtime(true), __FILE__, random_int(1, 100), 'E_CORE_ERROR'],
         ];
     }
 }

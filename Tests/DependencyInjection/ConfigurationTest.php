@@ -17,10 +17,10 @@ class ConfigurationTest extends KernelTestCase
     /**
      * Test parameters.
      */
-    public function testParameters()
+    public function testParameters(): void
     {
         static::bootKernel();
-        $container = isset(static::$container) ? static::$container : static::$kernel->getContainer();
+        $container = static::$container ?? static::$kernel->getContainer();
 
         $config = $container->getParameter(RollbarExtension::ALIAS . '.config');
 

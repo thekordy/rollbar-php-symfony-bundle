@@ -5,10 +5,7 @@
 
 Rollbar full-stack error tracking for Symfony.
 
-Supported Symfony versions: 3+, 4+.
-
-**NOTE 10/08/2018**
-The package has been renamed to `rollbar/rollbar-php-symfony-bundle` to reflect support for Symfony 3 and 4. If you have been using the package using the old name (`rollbar/rollbar-php-symfony3-bundle`) make sure to update your `composer.json` to use the new package name.
+Supported Symfony versions: 5+.
 
 ## Setup Instructions
 1. [Sign up for a Rollbar account](https://rollbar.com/signup)

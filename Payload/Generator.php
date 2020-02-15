@@ -41,7 +41,7 @@ class Generator
      *
      * @return array
      */
-    public function getExceptionPayload($exception)
+    public function getExceptionPayload($exception): array
     {
         /**
          * Build payload
@@ -84,7 +84,7 @@ class Generator
      *
      * @return array
      */
-    protected function buildGeneratorError($object, $file, $line)
+    protected function buildGeneratorError($object, $file, $line): array
     {
         $item = new ErrorItem();
 
@@ -101,7 +101,7 @@ class Generator
      *
      * @return array
      */
-    public function getErrorPayload($code, $message, $file, $line)
+    public function getErrorPayload($code, $message, $file, $line): array
     {
         $item = new ErrorItem();
 
@@ -110,7 +110,7 @@ class Generator
             'request'          => $this->getRequestInfo(),
             'environment'      => $this->getKernel()->getEnvironment(),
             'framework'        => Kernel::VERSION,
-            'language_version' => phpversion(),
+            'language_version' => PHP_VERSION,
             'server'           => $this->getServerInfo(),
         ];
 
@@ -122,7 +122,7 @@ class Generator
      *
      * @return array
      */
-    protected function getRequestInfo()
+    protected function getRequestInfo(): array
     {
         $request = $this->getContainer()->get('request_stack')->getCurrentRequest();
         if (empty($request)) {
@@ -144,9 +144,9 @@ class Generator
      *
      * @return array
      */
-    protected function getServerInfo()
+    protected function getServerInfo(): array
     {
-        $args   = isset($_SERVER['argv']) ? $_SERVER['argv'] : [];
+        $args   = $_SERVER['argv'] ?? [];
         $kernel = $this->getKernel();
 
         return [
@@ -163,7 +163,7 @@ class Generator
      *
      * @return ContainerInterface
      */
-    public function getContainer()
+    public function getContainer(): ContainerInterface
     {
         return $this->container;
     }
@@ -173,7 +173,7 @@ class Generator
      *
      * @return Kernel
      */
-    public function getKernel()
+    public function getKernel(): Kernel
     {
         return $this->kernel;
     }

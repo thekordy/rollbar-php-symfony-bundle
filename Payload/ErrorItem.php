@@ -45,7 +45,7 @@ class ErrorItem
      */
     public function __invoke($code, $message, $file, $line)
     {
-        $record = [
+        return [
             'exception' => [
                 'class'   => $this->mapError($code),
                 'message' => implode(' ', [
@@ -65,8 +65,6 @@ class ErrorItem
                 ],
             ],
         ];
-
-        return $record;
     }
 
     /**
@@ -76,7 +74,7 @@ class ErrorItem
      *
      * @return string
      */
-    protected function mapError($code)
+    protected function mapError($code): string
     {
         $code = (int) $code;
 

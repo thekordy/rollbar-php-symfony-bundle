@@ -27,7 +27,7 @@ class ErrorHandler extends AbstractProcessingHandler
      *
      * @return ErrorHandler
      */
-    public static function getInstance()
+    public static function getInstance(): ErrorHandler
     {
         if (empty(static::$instance)) {
             static::$instance = new self(Logger::DEBUG);
@@ -41,7 +41,7 @@ class ErrorHandler extends AbstractProcessingHandler
      *
      * @param callable $assert
      */
-    public function setAssert($assert = null)
+    public function setAssert($assert = null): void
     {
         $this->assert = $assert;
     }
@@ -53,12 +53,12 @@ class ErrorHandler extends AbstractProcessingHandler
      *
      * @return void
      */
-    protected function write(array $record)
+    protected function write(array $record): void
     {
-        $dummy = function () {
+        $dummy = static function () {
         };
 
         $closure = empty($this->assert) ? $dummy : $this->assert;
-        call_user_func($closure, $record);
+        $closure($record);
     }
 }

@@ -15,7 +15,7 @@ class TraceChainTest extends KernelTestCase
     /**
      * Test invoke.
      */
-    public function testInvoke()
+    public function testInvoke(): void
     {
         $previous = new \Exception('Exception', 1);
         $previous = new \Exception('Exception', 2, $previous);
