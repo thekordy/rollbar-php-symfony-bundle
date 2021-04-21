@@ -53,7 +53,7 @@ class ErrorHandler extends AbstractProcessingHandler
      *
      * @return void
      */
-    protected function write(array $record)
+    protected function write(array $record): void
     {
         $dummy = function () {
         };
