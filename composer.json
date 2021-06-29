@@ -27,7 +27,7 @@
         "psr-4": { "Tests\\": "tests/"}
     },
     "require": {
-        "php": "^7.1",
+        "php": "^7.1 || ^8.0",
         "rollbar/rollbar": "^2",
         "symfony/dependency-injection": "^3.4 | ^4.0",
         "symfony/config": "^3.4 | ^4.0",
